@@ -1,5 +1,6 @@
 package dto;
 
+import java.util.Date;
 
 public class CertificateCreationDTO {
 	private String commonName;
@@ -7,6 +8,11 @@ public class CertificateCreationDTO {
 	private String organisationName;
 	private String country;
 	private String email;
+	
+	private String serialNumber;
+	private Date endDate;
+	private Date startDate;
+	
 	public String getCommonName() {
 		return commonName;
 	}
@@ -37,6 +43,38 @@ public class CertificateCreationDTO {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+	
+	public String getSerialNumber() {
+		return serialNumber;
+	}
+	public void setSerialNumber(String serialNumber) {
+		this.serialNumber = serialNumber;
+	}
+	public Date getEndDate() {
+		return endDate;
+	}
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+	}
+	public Date getStartDate() {
+		return startDate;
+	}
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+	
+	public CertificateCreationDTO(String commonName, String organisationUnit, String organisationName, String country,
+			String email, String serialNumber, Date endDate, Date startDate) {
+		super();
+		this.commonName = commonName;
+		this.organisationUnit = organisationUnit;
+		this.organisationName = organisationName;
+		this.country = country;
+		this.email = email;
+		this.serialNumber = serialNumber;
+		this.endDate = endDate;
+		this.startDate = startDate;
+	}
 	public CertificateCreationDTO(String commonName, String organisationUnit, String organisationName, String country,
 			String email) {
 		super();
@@ -49,11 +87,6 @@ public class CertificateCreationDTO {
 	
 	public CertificateCreationDTO() {
 		super();
-	}
-	@Override
-	public String toString() {
-		return "CertificateCreationDTO [commonName=" + commonName + ", organisationUnit=" + organisationUnit
-				+ ", organisationName=" + organisationName + ", country=" + country + ", email=" + email + "]";
 	}
 	
 	
