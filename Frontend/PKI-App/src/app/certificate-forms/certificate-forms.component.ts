@@ -13,11 +13,12 @@ export class CertificateFormsComponent implements OnInit {
   hide = true;
 
   CertDTO = {
-    commonName:"",
-    organisationUnit:"",
-    organisationName:"",
-    country:"",
-    email:""
+    commonName:"dwawaddwa",
+    organisationUnit:"wdwad",
+    organisationName:"dwadwa",
+    email:"dwadwa",
+    privateKeyPass : "1234",
+    alias: "nekiAlias2"
   }
 
   submit() {
@@ -30,7 +31,7 @@ export class CertificateFormsComponent implements OnInit {
   }
 
   createCertificate(certificate: any) {
-    this._certificateService.createCertificate(certificate).subscribe(data => console.log(data),
+    this._certificateService.createRootCertificate(certificate).subscribe(data => console.log(data),
       error => console.log(error));
   }
 

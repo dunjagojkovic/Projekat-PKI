@@ -43,7 +43,11 @@ public class KeyStoreWriter {
 		} catch (CertificateException e) {
 			e.printStackTrace();
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			try {
+				keyStore.load(null, password);
+			} catch (NoSuchAlgorithmException | CertificateException | IOException e1) {
+				e1.printStackTrace();
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
