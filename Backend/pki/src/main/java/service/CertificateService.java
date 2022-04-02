@@ -14,6 +14,7 @@ import java.util.Date;
 
 import org.bouncycastle.asn1.x500.X500NameBuilder;
 import org.bouncycastle.asn1.x500.style.BCStyle;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import dto.CertificateCreationDTO;
@@ -24,17 +25,27 @@ import helper.IssuerData;
 import helper.KeyStoreReader;
 import helper.KeyStoreWriter;
 import helper.SubjectData;
+import model.Certificate;
+import model.CertificateType;
+import repository.CertificateRepository;
 
 @Service
 public class CertificateService {
 	
 	private String keystorePass;
+	@Autowired
+	private CertificateRepository certificateRepository;
 	
 	public boolean validateCert(CertificateCreationDTO certDTO) {
 		return !certDTO.getCommonName().isBlank() && !certDTO.getCountry().isBlank() && !certDTO.getEmail().isBlank() && !certDTO.getOrganisationName().isBlank();
 	}
+	
+	public void saveToDatabase(Certificate certificate) {
+		certificateRepository.save(certificate);
+		
+	}
 
-	public void addRootToKeyStore(CreateRootDTO rootDTO, String serial) {
+	public void addRootToKeyStore(CreateRootDTO rootDTO, int serial) {
 		KeyStoreWriter writer = new KeyStoreWriter();
 		CertificateGenerator generator = new CertificateGenerator();
 		keystorePass = "123";
@@ -43,14 +54,16 @@ public class CertificateService {
 
 		writer.loadKeyStore("keystore.jks", keystorePass.toCharArray());
 		
-		X509Certificate cert = generator.generateCertificate(createRootSubject(rootDTO, keyPair.getPublic(), serial), createRootIssuer(rootDTO, keyPair.getPrivate()));
+		X509Certificate cert = generator.generateCertificate(createRootSubject(rootDTO, keyPair.getPublic(), Integer.toString(serial)), createRootIssuer(rootDTO, keyPair.getPrivate()));
 		
 		writer.write(rootDTO.getAlias(), keyPair.getPrivate(), rootDTO.getPrivateKeyPass().toCharArray(), cert);
 		writer.saveKeyStore("keystore.jks", keystorePass.toCharArray());
+		Certificate databaseCertificate = new Certificate(serial, CertificateType.ROOT, false, rootDTO.getCommonName(), rootDTO.getOrganisationUnit(), rootDTO.getOrganisationName(), rootDTO.getEmail(), rootDTO.getAlias(), null, rootDTO.getPrivateKeyPass());
+		saveToDatabase(databaseCertificate);
 	}
 	
 	
-	public void addSubToKeyStore(CreateSubDTO subDTO, String serial) {
+	public void addSubToKeyStore(CreateSubDTO subDTO, int serial) {
 		KeyStoreWriter writer = new KeyStoreWriter();
 		KeyStoreReader reader = new KeyStoreReader();
 		CertificateGenerator generator = new CertificateGenerator();
@@ -60,10 +73,13 @@ public class CertificateService {
 
 		writer.loadKeyStore("keystore.jks", keystorePass.toCharArray());
 		
-		X509Certificate cert = generator.generateCertificate(createSubSubject(subDTO, keyPair.getPublic(), serial), reader.readIssuerFromStore("keystore.jks", subDTO.getIssuerAlias(), keystorePass.toCharArray(), keystorePass.toCharArray()));
+		X509Certificate cert = generator.generateCertificate(createSubSubject(subDTO, keyPair.getPublic(), Integer.toString(serial)), reader.readIssuerFromStore("keystore.jks", subDTO.getIssuerAlias(), keystorePass.toCharArray(), keystorePass.toCharArray()));
 		
 		writer.write(subDTO.getAlias(), keyPair.getPrivate(), subDTO.getPrivateKeyPass().toCharArray(), cert);
 		writer.saveKeyStore("keystore.jks", keystorePass.toCharArray());
+		
+		Certificate databaseCertificate = new Certificate(serial, CertificateType.INTERMEDIATE, false, subDTO.getCommonName(), subDTO.getOrganisationUnit(), subDTO.getOrganisationName(), subDTO.getEmail(), subDTO.getAlias(), certificateRepository.findByAlias(subDTO.getIssuerAlias()), subDTO.getPrivateKeyPass() );
+		saveToDatabase(databaseCertificate);
 	}
 	
 	private IssuerData createRootIssuer(CreateRootDTO rootDTO, PrivateKey privateKey) {

@@ -42,7 +42,7 @@ public class CertificateController {
 		Random rand = new Random();
 		int serial = rand.nextInt(1000000000);
 		
-		certService.addRootToKeyStore(rootDTO, Integer.toString(serial));
+		certService.addRootToKeyStore(rootDTO, serial);
 		return new ResponseEntity<>(rootDTO, HttpStatus.CREATED);
 
 
@@ -53,7 +53,7 @@ public class CertificateController {
 		Random rand = new Random();
 		int serial = rand.nextInt(1000000000);
 		
-		certService.addSubToKeyStore(subDTO, Integer.toString(serial));
+		certService.addSubToKeyStore(subDTO, serial);
 		return new ResponseEntity<>(subDTO, HttpStatus.CREATED);
 
 

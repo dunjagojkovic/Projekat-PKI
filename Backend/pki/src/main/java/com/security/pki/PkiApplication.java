@@ -14,7 +14,7 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 @EnableScheduling
 @RestController
-@EnableJpaRepositories("repo")
+@EnableJpaRepositories("repository")
 @EntityScan("model")
 @ComponentScan({"controller"})
 @ComponentScan({"service"})
