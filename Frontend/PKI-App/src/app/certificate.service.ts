@@ -20,4 +20,8 @@ export class CertificateService {
   createRootCertificate(certificate: any): Observable<any> {
     return this.http.post<any>("http://localhost:8080/api/certificates/registerRoot", JSON.stringify(certificate), this.httpOptions);
   }
+
+  createSubCertificate(certificate: any): Observable<any> {
+    return this.http.post<any>("http://localhost:8080/api/certificates/registerSub", JSON.stringify(certificate), this.httpOptions);
+  }
 }

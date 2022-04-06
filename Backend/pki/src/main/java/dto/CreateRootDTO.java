@@ -1,5 +1,7 @@
 package dto;
 
+import java.util.Date;
+
 public class CreateRootDTO {
 	
 	private String commonName;
@@ -8,7 +10,33 @@ public class CreateRootDTO {
 	private String email;
 	private String privateKeyPass;
 	private String alias;
+	private Date begin;
+	private Date end;
 	
+	public CreateRootDTO(String commonName, String organisationUnit, String organisationName, String email,
+			String privateKeyPass, String alias, Date begin, Date end) {
+		super();
+		this.commonName = commonName;
+		this.organisationUnit = organisationUnit;
+		this.organisationName = organisationName;
+		this.email = email;
+		this.privateKeyPass = privateKeyPass;
+		this.alias = alias;
+		this.begin = begin;
+		this.end = end;
+	}
+	public Date getBegin() {
+		return begin;
+	}
+	public void setBegin(Date begin) {
+		this.begin = begin;
+	}
+	public Date getEnd() {
+		return end;
+	}
+	public void setEnd(Date end) {
+		this.end = end;
+	}
 	public String getAlias() {
 		return alias;
 	}
@@ -63,7 +91,7 @@ public class CreateRootDTO {
 	public String toString() {
 		return "CreateRootDTO [commonName=" + commonName + ", organisationUnit=" + organisationUnit
 				+ ", organisationName=" + organisationName + ", email=" + email + ", privateKeyPass=" + privateKeyPass
-				+ ", alias=" + alias + "]";
+				+ ", alias=" + alias + ", begin=" + begin + ", end=" + end + "]";
 	}
 	
 	

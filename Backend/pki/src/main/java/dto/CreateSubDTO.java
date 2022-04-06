@@ -1,5 +1,9 @@
 package dto;
 
+import java.util.Date;
+
+import model.CertificateType;
+
 public class CreateSubDTO {
 	
 	private String commonName;
@@ -9,6 +13,48 @@ public class CreateSubDTO {
 	private String privateKeyPass;
 	private String alias;
 	private String issuerAlias;
+	private Date begin;
+	private Date end;
+	private CertificateType usage;
+	
+	public CreateSubDTO(String commonName, String organisationUnit, String organisationName, String email,
+			String privateKeyPass, String alias, String issuerAlias, Date begin, Date end, CertificateType usage) {
+		super();
+		this.commonName = commonName;
+		this.organisationUnit = organisationUnit;
+		this.organisationName = organisationName;
+		this.email = email;
+		this.privateKeyPass = privateKeyPass;
+		this.alias = alias;
+		this.issuerAlias = issuerAlias;
+		this.begin = begin;
+		this.end = end;
+		this.usage = usage;
+	}
+
+	public CertificateType getUsage() {
+		return usage;
+	}
+
+	public void setUsage(CertificateType usage) {
+		this.usage = usage;
+	}
+
+	public CreateSubDTO() {
+		super();
+	}
+	public Date getBegin() {
+		return begin;
+	}
+	public void setBegin(Date begin) {
+		this.begin = begin;
+	}
+	public Date getEnd() {
+		return end;
+	}
+	public void setEnd(Date end) {
+		this.end = end;
+	}
 	public String getCommonName() {
 		return commonName;
 	}
@@ -51,24 +97,13 @@ public class CreateSubDTO {
 	public void setIssuerAlias(String issuerAlias) {
 		this.issuerAlias = issuerAlias;
 	}
-	
-	public CreateSubDTO(String commonName, String organisationUnit, String organisationName, String email,
-			String privateKeyPass, String alias, String issuerAlias) {
-		super();
-		this.commonName = commonName;
-		this.organisationUnit = organisationUnit;
-		this.organisationName = organisationName;
-		this.email = email;
-		this.privateKeyPass = privateKeyPass;
-		this.alias = alias;
-		this.issuerAlias = issuerAlias;
-	}
-	
+
 	@Override
 	public String toString() {
 		return "CreateSubDTO [commonName=" + commonName + ", organisationUnit=" + organisationUnit
 				+ ", organisationName=" + organisationName + ", email=" + email + ", privateKeyPass=" + privateKeyPass
-				+ ", alias=" + alias + ", issuerAlias=" + issuerAlias + "]";
+				+ ", alias=" + alias + ", issuerAlias=" + issuerAlias + ", begin=" + begin + ", end=" + end + ", usage="
+				+ usage + "]";
 	}
 	
 	

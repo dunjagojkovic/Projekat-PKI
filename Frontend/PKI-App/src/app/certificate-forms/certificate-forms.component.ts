@@ -13,25 +13,44 @@ export class CertificateFormsComponent implements OnInit {
   hide = true;
 
   CertDTO = {
+    begin:"",
+    end:"",
     commonName:"dwawaddwa",
     organisationUnit:"wdwad",
     organisationName:"dwadwa",
     email:"dwadwa",
     privateKeyPass : "1234",
-    alias: "nekiAlias2"
+    alias: "nekiAlias69"
+  }
+
+  SubCertDTO = {
+    begin:"",
+    end:"",
+    commonName:"dwawaddwa",
+    organisationUnit:"wdwad",
+    organisationName:"dwadwa",
+    email:"dwadwa",
+    privateKeyPass : "1234",
+    alias: "nekiAlias99",
+    issuerAlias: "nekiAlias69",
+    usage: 2
   }
 
   submit() {
-    console.log(this.CertDTO)
-    console.log("POSLE INICIJALNOG LOGA")
-    this.createCertificate(this.CertDTO)
+    this.createRootCertificate(this.CertDTO)
+    //this.createSubCertificate(this.SubCertDTO)
   }
 
   ngOnInit(): void {
   }
 
-  createCertificate(certificate: any) {
-    this._certificateService.createRootCertificate(certificate).subscribe(data => console.log(data),
+  createRootCertificate(certificate: any) {
+    this._certificateService.createRootCertificate(certificate).subscribe(data => console.log("sent root"),
+      error => console.log(error));
+  }
+
+  createSubCertificate(certificate: any) {
+    this._certificateService.createSubCertificate(certificate).subscribe(data => console.log("sent sub"),
       error => console.log(error));
   }
 

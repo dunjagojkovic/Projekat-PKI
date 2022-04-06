@@ -1,7 +1,5 @@
 package controller;
 
-import java.util.Random;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,23 +37,28 @@ public class CertificateController {
 	
 	@PostMapping(consumes = "application/json", value = "/registerRoot")
 	public ResponseEntity<CreateRootDTO> registerRoot(@RequestBody CreateRootDTO rootDTO) {
-		Random rand = new Random();
-		int serial = rand.nextInt(1000000000);
+		if(certService.validateRoot(rootDTO)) {
+			certService.addRootToKeyStore(rootDTO, certService.generateSerial());
+			return new ResponseEntity<>(rootDTO, HttpStatus.CREATED);
+		}
+		else {
+			return new ResponseEntity<>(rootDTO, HttpStatus.BAD_REQUEST);
+		}
 		
-		certService.addRootToKeyStore(rootDTO, serial);
-		return new ResponseEntity<>(rootDTO, HttpStatus.CREATED);
-
 
 	}
 	
 	@PostMapping(consumes = "application/json", value = "/registerSub")
 	public ResponseEntity<CreateSubDTO> registerSub(@RequestBody CreateSubDTO subDTO) {
-		Random rand = new Random();
-		int serial = rand.nextInt(1000000000);
+		System.out.println(subDTO.toString());
 		
-		certService.addSubToKeyStore(subDTO, serial);
-		return new ResponseEntity<>(subDTO, HttpStatus.CREATED);
-
+		if(certService.validateSub(subDTO)) {
+			certService.addSubToKeyStore(subDTO, certService.generateSerial());
+			return new ResponseEntity<>(subDTO, HttpStatus.CREATED);
+		}
+		else {
+			return new ResponseEntity<>(subDTO, HttpStatus.BAD_REQUEST);
+		}
 
 	}
 	

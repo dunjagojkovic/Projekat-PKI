@@ -1,7 +1,7 @@
 package model;
 
 public enum CertificateType {
-	ROOT,
-	INTERMEDIATE,
-	CLIENT
+	CA,
+	SIGNING,
+	KEYAGREEMENT
 }

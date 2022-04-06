@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -40,7 +42,11 @@ public class Certificate {
 	@Column
 	private String privateKeyPass;
 
-
+	@Column
+	private Date validFrom;
+	
+	@Column
+	private Date validUntil;
 
 	public int getSerialNumber() {
 		return SerialNumber;
@@ -120,6 +126,42 @@ public class Certificate {
 
 	public void setAlias(String alias) {
 		this.alias = alias;
+	}
+
+	
+	
+	public Date getValidFrom() {
+		return validFrom;
+	}
+
+	public void setValidFrom(Date validFrom) {
+		this.validFrom = validFrom;
+	}
+
+	public Date getValidUntil() {
+		return validUntil;
+	}
+
+	public void setValidUntil(Date validUntil) {
+		this.validUntil = validUntil;
+	}
+
+	public Certificate(int serialNumber, CertificateType type, Boolean revoked, String commonName,
+			String organisationUnit, String organisationName, String email, String alias, Certificate issuer,
+			String privateKeyPass, Date validFrom, Date validUntil) {
+		super();
+		SerialNumber = serialNumber;
+		this.type = type;
+		this.revoked = revoked;
+		this.commonName = commonName;
+		this.organisationUnit = organisationUnit;
+		this.organisationName = organisationName;
+		this.email = email;
+		this.alias = alias;
+		this.issuer = issuer;
+		this.privateKeyPass = privateKeyPass;
+		this.validFrom = validFrom;
+		this.validUntil = validUntil;
 	}
 
 	public Certificate(int serialNumber, CertificateType type, Boolean revoked, String commonName,
