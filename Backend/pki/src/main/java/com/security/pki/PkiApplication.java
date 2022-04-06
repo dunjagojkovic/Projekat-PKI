@@ -8,10 +8,13 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.security.Security;
+
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 @EnableScheduling
 @RestController
-@EnableJpaRepositories("repo")
+@EnableJpaRepositories("repository")
 @EntityScan("model")
 @ComponentScan({"controller"})
 @ComponentScan({"service"})
@@ -20,6 +23,9 @@ public class PkiApplication {
 	
 	
 	public static void main(String[] args) {
+
+		Security.addProvider(new BouncyCastleProvider());
+
 		SpringApplication.run(PkiApplication.class, args);
 	}
 	
