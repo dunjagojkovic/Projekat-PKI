@@ -15,10 +15,10 @@ export class CertificateFormsComponent implements OnInit {
   CertDTO = {
     begin:"",
     end:"",
-    commonName:"dwawaddwa",
-    organisationUnit:"wdwad",
-    organisationName:"dwadwa",
-    email:"dwadwa",
+    commonName:"",
+    organisationUnit:"",
+    organisationName:"",
+    email:"",
     privateKeyPass : "1234",
     alias: "nekiAlias69"
   }
@@ -26,10 +26,10 @@ export class CertificateFormsComponent implements OnInit {
   SubCertDTO = {
     begin:"",
     end:"",
-    commonName:"dwawaddwa",
-    organisationUnit:"wdwad",
-    organisationName:"dwadwa",
-    email:"dwadwa",
+    commonName:"",
+    organisationUnit:"",
+    organisationName:"",
+    email:"",
     privateKeyPass : "1234",
     alias: "nekiAlias99",
     issuerAlias: "nekiAlias69",

@@ -38,6 +38,10 @@ public class CertificateService {
 	@Autowired
 	private CertificateRepository certificateRepository;
 	
+	public List<Certificate> getValidIssuers() {
+		return certificateRepository.getValidIssuers();
+	}
+	
 	public boolean validateCert(CertificateCreationDTO certDTO) {
 		return !certDTO.getCommonName().isBlank() && !certDTO.getCountry().isBlank() && !certDTO.getEmail().isBlank() && !certDTO.getOrganisationName().isBlank();
 	}
