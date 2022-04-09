@@ -24,4 +24,13 @@ export class CertificateService {
   createSubCertificate(certificate: any): Observable<any> {
     return this.http.post<any>("http://localhost:8080/api/certificates/registerSub", JSON.stringify(certificate), this.httpOptions);
   }
+
+  public downloadCertificate(){
+    const requestOptions: Object = {
+      /* other options here */
+      observe: 'response',
+      responseType: 'blob'
+    }
+    return this.http.get<any>("http://localhost:8080/api/certificates/root.cer", requestOptions); 
+  }
 }

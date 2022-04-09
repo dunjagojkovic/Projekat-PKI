@@ -37,9 +37,13 @@ export class CertificateFormsComponent implements OnInit {
   }
 
   submit() {
-    this.createRootCertificate(this.CertDTO)
+    //this.createRootCertificate(this.CertDTO)
     //this.createSubCertificate(this.SubCertDTO)
+    this.download()
+
   }
+
+
 
   ngOnInit(): void {
   }
@@ -52,6 +56,19 @@ export class CertificateFormsComponent implements OnInit {
   createSubCertificate(certificate: any) {
     this._certificateService.createSubCertificate(certificate).subscribe(data => console.log("sent sub"),
       error => console.log(error));
+  }
+
+  download(){
+    this._certificateService.downloadCertificate().subscribe(response =>{
+
+      let fileName = response.headers.get('content-disposition')?.split(';')[1].split('=')[1];
+      fileName = 'certificate.cer'
+      let blob:Blob = response.body as Blob;
+      let a = document.createElement('a');
+      a.download = fileName;
+      a.href = window.URL.createObjectURL(blob);
+      a.click();
+    });
   }
 
 }
