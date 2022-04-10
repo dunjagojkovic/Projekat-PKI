@@ -13,25 +13,29 @@
                         <h4 style="font-weight: bolder;" class="mt-1 mb-5 pb-1">We are The Lotus Team</h4>
                       </div>
       
-                      <form>
                         <p style="font-weight: bolder;">Please login to your account</p>
+
+                        <div>
       
+                          <form [formGroup]="form">
+                         
                         <div class="form-outline mb-4">
-                          <input style="font-weight: bolder;" type="email" id="form2Example11" class="form-control" placeholder="Email address"/>
+                          <input style="font-weight: bolder;" value="username"  formControlName="username" id="form2Example11" class="form-control" placeholder="Username"/>
                         </div>
       
                         <div class="form-outline mb-4">
-                          <input style="font-weight: bolder;" type="password" id="form2Example22" class="form-control" placeholder="Password" />
+                          <input style="font-weight: bolder;" value="password" type="password" formControlName="password" id="form2Example22" class="form-control" placeholder="Password" />
                         </div>
       
                         <div class="text-center pt-1 mb-5 pb-1">
-                          <button routerLink="/home" style="font-weight: bolder;" class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" type="button">Log in</button>
+                          <button (click)="onSubmit()" routerLink="/home"  style="font-weight: bolder;" class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" type="button">Log in</button>
+
                           <a style="font-weight: bolder;" class="text-muted" href="#!">Forgot password?</a>
-                        </div>
-      
-                       
-      
+                        </div>   
                       </form>
+                       
+                      </div>
+                     
       
                     </div>
                   </div>
