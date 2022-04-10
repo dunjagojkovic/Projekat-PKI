@@ -20,17 +20,46 @@ export class CertificateFormsComponent implements OnInit {
     organisationName:"",
     email:"",
     privateKeyPass : "1234",
-    alias: ""
+    alias: "",
+    issuerAlias: "",
+    usage: 0
   }
-  selectedSerialNumber = 0;
+  selectedIssuer = {
+    alias: "",
+    serialNumber: ""
+  }
+  selectedType = "Root";
   validIssuers = [] as any;
 
   submit() {
-    this.createRootCertificate(this.CertDTO)
+    if(this.isRootSelected()) {
+      this.CertDTO.issuerAlias = "";
+      this.CertDTO.usage = 0;
+      this.createRootCertificate(this.CertDTO);
+    }
+    else
+    {
+      this.CertDTO.issuerAlias = this.selectedIssuer.alias;
+      if(this.selectedType != "Leaf")
+      {
+        this.CertDTO.usage = 0;
+      }
+      else
+      {
+        this.CertDTO.usage = 1;
+      }
+      this.createSubCertificate(this.CertDTO)
+    }
   }
 
   ngOnInit(): void {
     this.getValidIssuers()
+  }
+
+  isRootSelected() {
+    if(this.selectedType != "Root")
+      return false;
+    return true;
   }
 
   getValidIssuers() {

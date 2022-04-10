@@ -74,15 +74,15 @@
           <span style="color:#9e9e9e; font-size:16px">Gender</span>
           <div class="row d-flex mt-4">
               <div class="col-md-4">
-                  <input type='radio' id='root' checked='checked' name='radio' class="option_button" value="Root">
+                  <input type='radio' id='root' checked='checked' name='radio' class="option_button" value="Root" [(ngModel)]="selectedType">
                   <label for='root'>Root</label>
               </div>
               <div class="col-md-4">
-                  <input type='radio' id='issuer' name='radio' class="option_button" value="Issuer">
+                  <input type='radio' id='issuer' name='radio' class="option_button" value="Issuer" [(ngModel)]="selectedType">
                   <label for='issuer'>Issuer</label>
               </div>
               <div class="col-md-4">
-                <input type='radio' id='leaf' name='radio' class="option_button" value="Leaf">
+                <input type='radio' id='leaf' name='radio' class="option_button" value="Leaf" [(ngModel)]="selectedType">
                 <label for='leaf'>Leaf</label>
               </div>
           </div>
@@ -120,8 +120,8 @@
                         <p>{{issuer.alias}}</p>
                     </div>
                     <div class="col-md-3">
-                      <div class="button_select" *ngIf="issuer.serialNumber != selectedSerialNumber" (click)="selectedSerialNumber = issuer.serialNumber"></div>
-                      <div class="button_selected" *ngIf="issuer.serialNumber == selectedSerialNumber" (click)="selectedSerialNumber = 0"></div>
+                      <div class="button_select" *ngIf="(issuer != selectedIssuer) && !isRootSelected()" (click)="selectedIssuer = issuer"></div>
+                      <div class="button_selected" *ngIf="(issuer == selectedIssuer) && !isRootSelected()"></div>
                     </div>
                 </div>
             </div>
