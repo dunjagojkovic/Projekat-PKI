@@ -10,6 +10,7 @@ import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Service;
 import dto.CertificateCreationDTO;
 import dto.CreateRootDTO;
 import dto.CreateSubDTO;
+import dto.ValidIssuerDTO;
 import helper.CertificateGenerator;
 import helper.IssuerData;
 import helper.KeyStoreReader;
@@ -37,6 +39,18 @@ public class CertificateService {
 	private String keystorePass;
 	@Autowired
 	private CertificateRepository certificateRepository;
+	
+	public List<Certificate> getValidIssuers() {
+		return certificateRepository.getValidIssuers();
+	}
+	
+	public List<ValidIssuerDTO> convertValidIssuersToDTO(List<Certificate> certificateList) {
+		List<ValidIssuerDTO> DTOList = new ArrayList<ValidIssuerDTO>();
+		for(Certificate c : certificateList) {
+			DTOList.add(new ValidIssuerDTO(c));
+		}
+		return DTOList;
+	}
 	
 	public boolean validateCert(CertificateCreationDTO certDTO) {
 		return !certDTO.getCommonName().isBlank() && !certDTO.getCountry().isBlank() && !certDTO.getEmail().isBlank() && !certDTO.getOrganisationName().isBlank();

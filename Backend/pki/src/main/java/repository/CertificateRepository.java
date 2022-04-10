@@ -3,6 +3,8 @@ package repository;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import model.Certificate;
@@ -13,4 +15,9 @@ public interface CertificateRepository extends JpaRepository<Certificate, Intege
 	public Certificate findByAlias(String alias);
 	public boolean existsByAlias(String alias);
 	List<Certificate> findAllByRevokedAndType(boolean revoked,CertificateType type);
+	
+	@Query(value = "SELECT * "
+			+ "FROM certificate  "
+			+ "WHERE type = 0 AND (Now() BETWEEN valid_from AND valid_until)", nativeQuery = true)
+    List<Certificate> getValidIssuers();
 }
