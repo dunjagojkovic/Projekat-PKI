@@ -1,9 +1,16 @@
 package dto;
 
+import model.Certificate;
+
 public class ValidIssuerDTO {
 	private int serialNumber;
 	private String alias;
 	
+	public ValidIssuerDTO() { }
+	public ValidIssuerDTO(Certificate certificate) {
+		this.serialNumber = certificate.getSerialNumber();
+		this.alias = certificate.getAlias();
+	}
 	
 	public int getSerialNumber() {
 		return serialNumber;

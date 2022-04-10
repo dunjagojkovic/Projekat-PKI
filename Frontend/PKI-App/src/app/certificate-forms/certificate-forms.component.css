@@ -1,9 +1,7 @@
 .white-panel{
   background-color: rgba(255,255, 255, 1);
   position:relative;
-  width:25%;
   top: 50px;
-  left: 37.5%;
   border-radius:10px;
   transition:.3s ease-in-out;
   z-index:0;
@@ -80,6 +78,39 @@
   float:right;
   cursor:pointer;
   transition: all .3s;
+}
+
+/* SELECT BUTTON */
+    
+.button_select {
+  position: absolute;
+  width: 35px;
+  height: 35px;
+  background: #fff;
+  cursor: pointer;
+  border: 2px solid #42aa59;
+  border-radius: 20px;
+}
+
+.button_select:hover:before,
+.button_select:hover:after {
+  background: #fff;
+  transition: 0.2s;
+}
+
+.button_select:hover {
+  background-color: #42aa59;
+  transition: 0.2s;
+}
+
+.button_selected {
+  position: absolute;
+  width: 35px;
+  height: 35px;
+  background: #42aa59;
+  cursor: pointer;
+  border: 2px solid #42aa59;
+  border-radius: 20px;
 }
 
 /* INPUT FIELDS */
@@ -193,7 +224,7 @@ label.input_label > select:focus {
   box-shadow: 0 1px 0 0 #42aa59;
 }
 
-/* GENDER SELECTION */  
+/* TYPE SELECTION */  
 input[type="radio"] {
   display: none;
 }
@@ -211,30 +242,16 @@ input[type="radio"] + label {
   transition: all 200ms ease;
 }
 
-input[type="radio"].male_option:hover + label {
+input[type="radio"].option_button:hover + label {
   color: white;
-  background-color: rgb(143, 176, 233);
+  background-color: #84A98C;
   border: 2px solid white;
   transition: all .3s;
 }
 
-input[type="radio"].male_option:checked + label {
+input[type="radio"].option_button:checked + label {
   color: white;
-  background-color: rgba(0,95,255,1);
-  border: 2px solid white;
-  transition: all .3s;
-}
-
-input[type="radio"].female_option:hover + label {
-  color: white;
-  background-color: #ffd1d9;
-  border: 2px solid white;
-  transition: all .3s;
-}
-
-input[type="radio"].female_option:checked + label {
-  color: white;
-  background-color: #FB9AAC;
+  background-color: #42aa59;
   border: 2px solid white;
   transition: all .3s;
 }

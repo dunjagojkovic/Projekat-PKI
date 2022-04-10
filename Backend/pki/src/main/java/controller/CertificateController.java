@@ -27,8 +27,8 @@ public class CertificateController {
 	
 	
 	@GetMapping(value = "/getValidIssuers")
-	public ResponseEntity<List<Certificate>> getValidIssuers() {
-		return new ResponseEntity<>(certService.getValidIssuers(), HttpStatus.OK);
+	public ResponseEntity<List<ValidIssuerDTO>> getValidIssuers() {
+		return new ResponseEntity<>(certService.convertValidIssuersToDTO(certService.getValidIssuers()), HttpStatus.OK);
 	}
 	
 	@PostMapping(consumes = "application/json", value = "/registerCert")

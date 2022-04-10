@@ -20,28 +20,21 @@ export class CertificateFormsComponent implements OnInit {
     organisationName:"",
     email:"",
     privateKeyPass : "1234",
-    alias: "nekiAlias69"
+    alias: ""
   }
-
-  SubCertDTO = {
-    begin:"",
-    end:"",
-    commonName:"",
-    organisationUnit:"",
-    organisationName:"",
-    email:"",
-    privateKeyPass : "1234",
-    alias: "nekiAlias99",
-    issuerAlias: "nekiAlias69",
-    usage: 2
-  }
+  selectedSerialNumber = 0;
+  validIssuers = [] as any;
 
   submit() {
     this.createRootCertificate(this.CertDTO)
-    //this.createSubCertificate(this.SubCertDTO)
   }
 
   ngOnInit(): void {
+    this.getValidIssuers()
+  }
+
+  getValidIssuers() {
+    this._certificateService.getValidIssuers().subscribe(data => this.validIssuers = data); 
   }
 
   createRootCertificate(certificate: any) {
