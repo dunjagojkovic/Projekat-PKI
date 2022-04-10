@@ -19,6 +19,10 @@ export class CertificateService {
 
   constructor(private http: HttpClient) { }
 
+  getAllCertificates() : Observable<any[]>{
+    return this.http.get<any[]>("http://localhost:8080/api/certificates/getAllCertificates")
+  }
+
   getValidIssuers() : Observable<any[]>{
     return this.http.get<any[]>("http://localhost:8080/api/certificates/getValidIssuers")
   }
@@ -35,5 +39,7 @@ export class CertificateService {
     return this.http.post<any>("http://localhost:8080/api/certificates/registerSub", JSON.stringify(certificate), this.getAuthoHeader() );
   }
 
- 
+  revokeCertificate(serialNumber: number): Observable<any> {
+    return this.http.post<any>("http://localhost:8080/api/certificates/revokeCert/" + serialNumber , this.getAuthoHeader() );
+  }
 }

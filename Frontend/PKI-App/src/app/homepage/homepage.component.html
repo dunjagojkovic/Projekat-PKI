@@ -18,30 +18,20 @@
     <table style="max-width: 1000px; align-self: center;" class="table caption-top">
         <thead>
           <tr>
-            <th scope="col"> </th>
             <th scope="col">Alias</th>
             <th scope="col">Common name </th>
             <th scope="col">Organisation unit</th>
+            <th scope="col">Issuer</th>
+            <th scope="col">Revoke</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-          </tr>
-          <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-          </tr>
-          <tr>
-            <th scope="row">3</th>
-            <td>Larry</td>
-            <td>the Bird</td>
-            <td>@twitter</td>
+          <tr *ngFor="let c of allCertificates">
+            <td>{{c.alias}}</td>
+            <td>{{c.commonName}}</td>
+            <td>{{c.organisationUnit}}</td>
+            <td>{{c.issuer}}</td>
+            <td><input type="button" value="Revoke" *ngIf="!c.revoked" (click)="revokeCertificate(c.serialNumber)"/></td>
           </tr>
         </tbody>
       </table>

@@ -18,9 +18,12 @@ import java.util.Random;
 import org.bouncycastle.asn1.x500.X500NameBuilder;
 import org.bouncycastle.asn1.x500.style.BCStyle;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import dto.CertificateCreationDTO;
+import dto.CertificateDTO;
 import dto.CreateRootDTO;
 import dto.CreateSubDTO;
 import dto.ValidIssuerDTO;
@@ -40,8 +43,20 @@ public class CertificateService {
 	@Autowired
 	private CertificateRepository certificateRepository;
 	
+	public List<Certificate> getAllCertificates() {
+		return certificateRepository.findAll();
+	}
+	
 	public List<Certificate> getValidIssuers() {
 		return certificateRepository.getValidIssuers();
+	}
+	
+	public List<CertificateDTO> convertCertificatesToDTO(List<Certificate> certificateList) {
+		List<CertificateDTO> DTOList = new ArrayList<CertificateDTO>();
+		for(Certificate c : certificateList) {
+			DTOList.add(new CertificateDTO(c));
+		}
+		return DTOList;
 	}
 	
 	public List<ValidIssuerDTO> convertValidIssuersToDTO(List<Certificate> certificateList) {
@@ -132,6 +147,23 @@ public class CertificateService {
 		saveToDatabase(databaseCertificate);
 	}
 	
+	public ResponseEntity<String> revokeCert(int certificateToRevokeSerialNumber) {
+		Certificate certificateToRevoke = certificateRepository.findById(certificateToRevokeSerialNumber).orElse(null);
+		if(certificateToRevoke == null)
+			return new ResponseEntity<>("Certificate not found!", HttpStatus.BAD_REQUEST);
+		List<Certificate> allCertificates = getAllCertificates();
+		certificateToRevoke.setRevoked(true);
+		saveToDatabase(certificateToRevoke);
+		for(Certificate c : allCertificates) {
+			if(c.isInIssuerHierarchy(certificateToRevokeSerialNumber))
+			{
+				c.setRevoked(true);
+				saveToDatabase(c);
+			}
+		}
+		return new ResponseEntity<>("Successfully revoked certificate!", HttpStatus.OK);
+	}
+	
 	private IssuerData createRootIssuer(CreateRootDTO rootDTO, PrivateKey privateKey) {
 		X500NameBuilder builder = new X500NameBuilder(BCStyle.INSTANCE);
 	    builder.addRDN(BCStyle.CN, rootDTO.getCommonName());
@@ -196,7 +228,7 @@ public class CertificateService {
 		}
         return null;
 	}
-
+	
 	public int generateSerial() {
 
 		Random rand = new Random();

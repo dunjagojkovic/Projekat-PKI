@@ -185,6 +185,13 @@ public class Certificate {
 		// TODO Auto-generated constructor stub
 	}
 	
-	
+	public boolean isInIssuerHierarchy(int issuerSerial) {
+		if(this.issuer == null)
+			return false;
+		if(this.issuer.getSerialNumber() == issuerSerial) {
+			return true;
+		}
+		return isInIssuerHierarchy(issuerSerial);
+	}
 	
 }

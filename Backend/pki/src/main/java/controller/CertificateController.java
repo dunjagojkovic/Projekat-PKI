@@ -9,6 +9,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import dto.CertificateCreationDTO;
+import dto.CertificateDTO;
 import dto.CreateRootDTO;
 import dto.CreateSubDTO;
 import dto.ValidIssuerDTO;
@@ -23,10 +24,19 @@ public class CertificateController {
 	@Autowired
 	private CertificateService certService;
 
-
+	@GetMapping(value = "/getAllCertificates")
+	public ResponseEntity<List<CertificateDTO>> getAllCertificates() {
+		return new ResponseEntity<>(certService.convertCertificatesToDTO(certService.getAllCertificates()), HttpStatus.OK);
+	}
+	
 	@GetMapping(value = "/getValidIssuers")
 	public ResponseEntity<List<ValidIssuerDTO>> getValidIssuers() {
 		return new ResponseEntity<>(certService.convertValidIssuersToDTO(certService.getValidIssuers()), HttpStatus.OK);
+	}
+	
+	@PostMapping(value = "/revokeCert/{certificateToRevokeSerialNumber}")
+	public ResponseEntity<String> revokeCert(@PathVariable int certificateToRevokeSerialNumber) {
+		return certService.revokeCert(certificateToRevokeSerialNumber);
 	}
 
 	@PostMapping(consumes = "application/json", value = "/registerCert")
