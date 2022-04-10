@@ -21,7 +21,7 @@ public class Certificate {
 	@Column
 	private Boolean revoked;
 	
-	@Column
+	@Column(unique = true)
 	private String commonName;
 	
 	@Column
