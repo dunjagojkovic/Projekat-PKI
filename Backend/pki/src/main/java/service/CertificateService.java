@@ -96,7 +96,7 @@ public class CertificateService {
 
 		writer.loadKeyStore("keystore.jks", keystorePass.toCharArray());
 		
-		X509Certificate cert = generator.generateCertificate(createRootSubject(rootDTO, keyPair.getPublic(), Integer.toString(serial)), createRootIssuer(rootDTO, keyPair.getPrivate()),CertificateType.CA);
+		X509Certificate cert = generator.generateCertificate(createRootSubject(rootDTO, keyPair.getPublic(), Integer.toString(serial)), createRootIssuer(rootDTO, keyPair.getPrivate()),CertificateType.CA,true,"");
 		
 		writer.write(rootDTO.getAlias(), keyPair.getPrivate(), rootDTO.getPrivateKeyPass().toCharArray(), cert);
 		writer.saveKeyStore("keystore.jks", keystorePass.toCharArray());
@@ -116,7 +116,7 @@ public class CertificateService {
 
 		writer.loadKeyStore("keystore.jks", keystorePass.toCharArray());
 		
-		X509Certificate cert = generator.generateCertificate(createSubSubject(subDTO, keyPair.getPublic(), Integer.toString(serial)), reader.readIssuerFromStore("keystore.jks", subDTO.getIssuerAlias(), keystorePass.toCharArray(), certificateRepository.findByAlias(subDTO.getIssuerAlias()).getPrivateKeyPass().toCharArray()),subDTO.getUsage());
+		X509Certificate cert = generator.generateCertificate(createSubSubject(subDTO, keyPair.getPublic(), Integer.toString(serial)), reader.readIssuerFromStore("keystore.jks", subDTO.getIssuerAlias(), keystorePass.toCharArray(), certificateRepository.findByAlias(subDTO.getIssuerAlias()).getPrivateKeyPass().toCharArray()),subDTO.getUsage(),false,subDTO.getIssuerAlias());
 		
 		writer.write(subDTO.getAlias(), keyPair.getPrivate(), subDTO.getPrivateKeyPass().toCharArray(), cert);
 		writer.saveKeyStore("keystore.jks", keystorePass.toCharArray());
@@ -209,7 +209,7 @@ public class CertificateService {
 	
 	public void saveToFile(String alias) {
 		KeyStoreReader reader = new KeyStoreReader();
-		java.security.cert.Certificate x = reader.readCertificate("keystore.jks", "1234", alias);
+		java.security.cert.Certificate x = reader.readCertificate("keystore.jks", "123", alias);
         try {
             final FileOutputStream os = new FileOutputStream("certificates"+File.separator+alias+".cer");
             os.write("-----BEGIN CERTIFICATE-----\n".getBytes("US-ASCII"));

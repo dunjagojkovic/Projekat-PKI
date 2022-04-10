@@ -26,20 +26,20 @@ export class CertificateFormsComponent implements OnInit {
   SubCertDTO = {
     begin:"",
     end:"",
-    commonName:"dwawaddwa",
-    organisationUnit:"wdwad",
-    organisationName:"dwadwa",
-    email:"dwadwa",
+    commonName:"dwawaddw3211111",
+    organisationUnit:"wdwad321321",
+    organisationName:"dwadwa321321",
+    email:"dwadwa321213",
     privateKeyPass : "1234",
     alias: "nekiAlias99",
     issuerAlias: "nekiAlias69",
-    usage: 2
+    usage: 1
   }
 
   submit() {
     //this.createRootCertificate(this.CertDTO)
-    //this.createSubCertificate(this.SubCertDTO)
-    this.download()
+    this.createSubCertificate(this.SubCertDTO)
+    //this.download()
 
   }
 

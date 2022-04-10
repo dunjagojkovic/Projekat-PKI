@@ -90,7 +90,7 @@ public class CertificateController {
 			
 			contents = Files.readAllBytes(file.toPath());
 			HttpHeaders headers = new HttpHeaders();
-			headers.add("Content-Type", "application/pkix-cert");
+			headers.add("Content-Type", "application/x-x509-ca-cert");
 		    // Here you have to set the actual filename of your pdf
 		    headers.setContentDispositionFormData(fileName, fileName);
 		    headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
