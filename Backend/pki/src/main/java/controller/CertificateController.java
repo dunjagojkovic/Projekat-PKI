@@ -3,10 +3,8 @@ package controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 import dto.CertificateCreationDTO;
 import dto.CreateRootDTO;
@@ -15,6 +13,7 @@ import service.CertificateService;
 
 @RestController
 @RequestMapping(value = "api/certificates")
+@CrossOrigin(origins = "http://localhost:4200")
 public class CertificateController {
 	
 	@Autowired
@@ -34,7 +33,8 @@ public class CertificateController {
 		}
 
 	}
-	
+
+	//@PreAuthorize("hasAuthority('Admin')")
 	@PostMapping(consumes = "application/json", value = "/registerRoot")
 	public ResponseEntity<CreateRootDTO> registerRoot(@RequestBody CreateRootDTO rootDTO) {
 		if(certService.validateRoot(rootDTO)) {

@@ -14,6 +14,11 @@ import { HomepageComponent } from './homepage/homepage.component';
 import { CertificateFormsComponent } from './certificate-forms/certificate-forms.component';
 import { CertificateService } from './certificate.service';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatSnackBarModule} from '@angular/material/snack-bar';
+import { UserService } from './user.service';
+
+
 
 
 @NgModule({
@@ -33,9 +38,12 @@ import { HttpClientModule, HttpClient } from '@angular/common/http';
     MatSelectModule, 
     MatButtonModule,
     MatToolbarModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule,
+    MatSnackBarModule
+   
   ],
-  providers: [HttpClientModule, CertificateService],
+  providers: [HttpClientModule, CertificateService, UserService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

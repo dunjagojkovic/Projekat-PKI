@@ -7,21 +7,29 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class CertificateService {
-  httpOptions = {
-    headers: new HttpHeaders().set('Content-Type', 'application/json')
-  };
+  getAuthoHeader() : any {
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization' : 'Bearer ' + localStorage.getItem("token")
+    }
+    return{
+      headers: headers
+    };
+  }  
 
   constructor(private http: HttpClient) { }
 
   createCertificate(certificate: any): Observable<any> {
-    return this.http.post<any>("http://localhost:8080/api/certificates/registerCert", JSON.stringify(certificate), this.httpOptions);
+    return this.http.post<any>("http://localhost:8080/api/certificates/registerCert", JSON.stringify(certificate), this.getAuthoHeader() );
   }
 
   createRootCertificate(certificate: any): Observable<any> {
-    return this.http.post<any>("http://localhost:8080/api/certificates/registerRoot", JSON.stringify(certificate), this.httpOptions);
+    return this.http.post<any>("http://localhost:8080/api/certificates/registerRoot", JSON.stringify(certificate), this.getAuthoHeader() );
   }
 
   createSubCertificate(certificate: any): Observable<any> {
-    return this.http.post<any>("http://localhost:8080/api/certificates/registerSub", JSON.stringify(certificate), this.httpOptions);
+    return this.http.post<any>("http://localhost:8080/api/certificates/registerSub", JSON.stringify(certificate), this.getAuthoHeader() );
   }
+
+ 
 }
