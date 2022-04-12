@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { FormBuilder, Validators} from '@angular/forms';
 import { MatSnackBar} from '@angular/material/snack-bar';
 import { UserService } from '../user.service';
-import { CertificateService } from '../certificate.service';
 
 @Component({
   selector: 'app-frontpage',

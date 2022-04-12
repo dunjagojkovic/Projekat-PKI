@@ -48,8 +48,19 @@ public class Certificate {
 	@Column
 	private Date validUntil;
 
+	@ManyToOne
+	private User user;
+
 	public int getSerialNumber() {
 		return SerialNumber;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	public void setSerialNumber(int serialNumber) {
@@ -148,7 +159,7 @@ public class Certificate {
 
 	public Certificate(int serialNumber, CertificateType type, Boolean revoked, String commonName,
 			String organisationUnit, String organisationName, String email, String alias, Certificate issuer,
-			String privateKeyPass, Date validFrom, Date validUntil) {
+			String privateKeyPass, Date validFrom, Date validUntil, User user) {
 		super();
 		SerialNumber = serialNumber;
 		this.type = type;
@@ -162,6 +173,7 @@ public class Certificate {
 		this.privateKeyPass = privateKeyPass;
 		this.validFrom = validFrom;
 		this.validUntil = validUntil;
+		this.user = user;
 	}
 
 	public Certificate(int serialNumber, CertificateType type, Boolean revoked, String commonName,

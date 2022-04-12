@@ -56,7 +56,7 @@
 .register-show input[type="button"] {
   max-width: 150px;
   width: 100%;
-  background: #42aa59;
+  background: #84A98C;
   color: #f9f9f9;
   border: none;
   padding: 10px;
@@ -69,7 +69,7 @@
 
 .register-show input[type="button"]:hover {
   transform: scale(110%);
-  background: #42aa59;
+  background: #84A98C;
   color: #f9f9f9;
   border: none;
   padding: 10px;
@@ -99,7 +99,7 @@
 }
 
 .button_select:hover {
-  background-color: #42aa59;
+  background-color: #84A98C;
   transition: 0.2s;
 }
 
@@ -107,9 +107,9 @@
   position: absolute;
   width: 35px;
   height: 35px;
-  background: #42aa59;
+  background: #84A98C;
   cursor: pointer;
-  border: 2px solid #42aa59;
+  border: 2px solid #84A98C;
   border-radius: 20px;
 }
 
@@ -154,8 +154,8 @@ label.input_label:hover > input {
   transition: all .3s;
 }
 label.input_label > input:valid {
-  border-bottom: 1px solid #42aa59;
-  box-shadow: 0 1px 0 0 #42aa59;
+  border-bottom: 1px solid #84A98C;
+  box-shadow: 0 1px 0 0 #84A98C;
 }
 label.input_label > span {
   color: #9e9e9e;
@@ -169,11 +169,11 @@ label.input_label > span {
 label.input_label > input:focus + span {
   transform: translateY(-25px) scale(0.8);
   transform-origin: 0;
-  color: #42aa59;
+  color: #84A98C;
 }
 label.input_label > input:focus {
-  border-bottom: 1px solid #42aa59;
-  box-shadow: 0 1px 0 0 #42aa59;
+  border-bottom: 1px solid #84A98C;
+  box-shadow: 0 1px 0 0 #84A98C;
 }   
 label.input_label > select {
   position: relative;
@@ -192,8 +192,8 @@ label.input_label > select {
   transition: all .3s;
 }
 label.input_label > select:valid {
-  border-bottom: 1px solid #42aa59;
-  box-shadow: 0 1px 0 0 #42aa59;
+  border-bottom: 1px solid #84A98C;
+  box-shadow: 0 1px 0 0 #84A98C;
 }
 label.input_label > span {
   color: #9e9e9e;
@@ -207,21 +207,21 @@ label.input_label > span {
 label.input_label > select:focus + span {
   transform: translateY(-25px) scale(0.8);
   transform-origin: 0;
-  color: #42aa59;
+  color: #84A98C;
 }
 label.input_label > select:valid + span.keep_hovered {
   transform: translateY(-25px) scale(0.8);
   transform-origin: 0;
-  color: #42aa59;
+  color: #84A98C;
 }
 label.input_label > input:valid + span.keep_hovered {
   transform: translateY(-25px) scale(0.8);
   transform-origin: 0;
-  color: #42aa59;
+  color: #84A98C;
 }
 label.input_label > select:focus {
-  border-bottom: 1px solid #42aa59;
-  box-shadow: 0 1px 0 0 #42aa59;
+  border-bottom: 1px solid #84A98C;
+  box-shadow: 0 1px 0 0 #84A98C;
 }
 
 /* TYPE SELECTION */  
@@ -251,7 +251,7 @@ input[type="radio"].option_button:hover + label {
 
 input[type="radio"].option_button:checked + label {
   color: white;
-  background-color: #42aa59;
+  background-color: #84A98C;
   border: 2px solid white;
   transition: all .3s;
 }

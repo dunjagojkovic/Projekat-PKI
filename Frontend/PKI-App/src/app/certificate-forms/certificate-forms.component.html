@@ -71,7 +71,7 @@
                 </label>
             </div>
           </div>
-          <span style="color:#9e9e9e; font-size:16px">Gender</span>
+          <span style="color:#84A98C; font-size:16px"></span>
           <div class="row d-flex mt-4">
               <div class="col-md-4">
                   <input type='radio' id='root' checked='checked' name='radio' class="option_button" value="Root" [(ngModel)]="selectedType">
@@ -124,10 +124,30 @@
                       <div class="button_selected" *ngIf="(issuer == selectedIssuer) && !isRootSelected()"></div>
                     </div>
                 </div>
+
+               
             </div>
+            <div class="col-md-12">
+              <label class="input_label">
+                <input style="font-weight: bolder;" [(ngModel)]="CertDTO.username" id="form2Example11" class="form-control" placeholder="Username"/>
+                <span class="keep_hovered">username</span>
+              </label>
+          </div>
+          <div class="col-md-12">
+            <label class="input_label">
+              <input style="font-weight: bolder;"  type="password" [(ngModel)]="CertDTO.password" id="form2Example22" class="form-control" placeholder="Password" />
+              <span class="keep_hovered">password</span>
+            </label>
+        </div>
           </div>
       </div>
     </div>
     <div class="col-md-4">
     </div>
+
+   
+
+
+
+ 
   </div>

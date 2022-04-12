@@ -2,6 +2,7 @@ package controller;
 
 import dto.LoginDTO;
 import dto.LoginResponseDTO;
+import dto.RegistrationDTO;
 import model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 import security.CustomUserDetailsService;
 import security.TokenUtil;
 import service.UserService;
+
+import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200", exposedHeaders = "token")
@@ -51,6 +54,25 @@ public class UserController {
     public ResponseEntity<?> getCurrentUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         return new ResponseEntity<>(auth, HttpStatus.OK);
+    }
+
+    @PostMapping(path = "/register")
+    public ResponseEntity<?> registerClient(@RequestBody RegistrationDTO registrationDTO) {
+
+        User user = userService.registerUser(registrationDTO);
+
+        if(user == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @GetMapping(path = "/users")
+    public ResponseEntity<?> getAllUsers(){
+        List<User> users = userService.findAllByType();
+        return new ResponseEntity<>(users, HttpStatus.OK);
+
     }
 
 }
