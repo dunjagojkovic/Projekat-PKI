@@ -22,7 +22,7 @@ export class HomepageComponent implements OnInit {
     this.role = helper.decodeToken(localStorage.getItem('token') || '{}').roles;
     console.log(helper.decodeToken(localStorage.getItem('token') || '{}'))
     
-    if(this.role == "admin")
+    if(this.role == "Admin")
       this.getAllCertificates()
     else
       this.getSubordinateCertificates()
