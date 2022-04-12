@@ -61,7 +61,7 @@ public class UserService {
     
     public List<User> getAllSubordinateUsersToUser(User user) {
     	List<Certificate> subordinateCertificates = certService.getSubordinateCertificates(user);
-    	List<User> allSubordinateUsers =  new ArrayList<User>();
+    	List<User> allSubordinateUsers =  new ArrayList<>();
     	allSubordinateUsers.add(user);
     	for(Certificate c : subordinateCertificates) 
     	{

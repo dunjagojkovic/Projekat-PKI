@@ -76,6 +76,10 @@ public class CertificateService {
 		return certificateRepository.getValidIssuers();
 	}
 	
+	public List<Certificate> getValidIssuers(User user) {
+		return certificateRepository.getValidIssuers(user.getId());
+	}
+	
 	public List<CertificateDTO> convertCertificatesToDTO(List<Certificate> certificateList) {
 		List<CertificateDTO> DTOList = new ArrayList<CertificateDTO>();
 		for(Certificate c : certificateList) {

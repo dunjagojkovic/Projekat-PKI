@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 
 @Injectable({
@@ -22,6 +23,14 @@ export class UserService {
     };
   }  
 
+  getAllUsers() : Observable<any[]>{
+    return this.http.get<any[]>(this.baseURL + "/api/users/getAllUsers")
+  }
+
+  getSubordinateUsers(username: string) : Observable<any[]>{
+    return this.http.get<any[]>(this.baseURL + "/api/users/getSubordinateUsers/" + username)
+  }
+
   login(data: any) {
     return this.http.post(this.baseURL + "/api/users/login", data);
   }
@@ -33,8 +42,4 @@ export class UserService {
   register(data: any) {
     return this.http.post(this.baseURL + "/api/users/register", data,  this.getAuthoHeader());
   }
-
-
-
-
 }

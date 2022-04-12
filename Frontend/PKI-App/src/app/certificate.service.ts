@@ -31,6 +31,10 @@ export class CertificateService {
     return this.http.get<any[]>("http://localhost:8080/api/certificates/getValidIssuers")
   }
 
+  getValidIssuersForUser(username: string) : Observable<any[]>{
+    return this.http.get<any[]>("http://localhost:8080/api/certificates/getValidIssuersForUser/" + username)
+  }
+
   createCertificate(certificate: any): Observable<any> {
     return this.http.post<any>("http://localhost:8080/api/certificates/registerCert", JSON.stringify(certificate), this.getAuthoHeader() );
   }

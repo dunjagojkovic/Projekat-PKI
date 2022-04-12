@@ -4,6 +4,7 @@ import { CertificateService } from '../certificate.service';
 import { FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { MatSnackBar} from '@angular/material/snack-bar';
 import { UserService } from '../user.service';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Component({
   selector: 'app-certificate-forms',
@@ -49,6 +50,9 @@ export class CertificateFormsComponent implements OnInit {
   }
   selectedType = "Root";
   validIssuers = [] as any;
+  users = [] as any;
+  currentUser = "";
+  role = "";
 
   submit() {
     if(this.isRootSelected()) {
@@ -76,7 +80,21 @@ export class CertificateFormsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getValidIssuers()
+    const helper = new JwtHelperService();
+    this.currentUser = helper.decodeToken(localStorage.getItem('token') || '{}').sub;
+    this.role = helper.decodeToken(localStorage.getItem('token') || '{}').roles;
+    console.log(helper.decodeToken(localStorage.getItem('token') || '{}'))
+    
+    if(this.role == "admin")
+    {
+      this.getAllUsers()
+      this.getValidIssuers()
+    }
+    else
+    {
+      this.getSubordinateUsers()
+      this.getValidIssuersForUser()
+    }
   }
 
   isRootSelected() {
@@ -87,6 +105,18 @@ export class CertificateFormsComponent implements OnInit {
 
   getValidIssuers() {
     this._certificateService.getValidIssuers().subscribe(data => this.validIssuers = data); 
+  }
+
+  getValidIssuersForUser() {
+    this._certificateService.getValidIssuersForUser(this.currentUser).subscribe(data => this.validIssuers = data); 
+  }
+
+  getAllUsers() {
+    this.userService.getAllUsers().subscribe(data => this.users = data); 
+  }
+
+  getSubordinateUsers() {
+    this.userService.getSubordinateUsers(this.currentUser).subscribe(data => this.users = data); 
   }
 
   createRootCertificate(certificate: any) {

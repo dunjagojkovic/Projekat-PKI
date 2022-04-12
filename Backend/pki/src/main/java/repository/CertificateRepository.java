@@ -22,4 +22,9 @@ public interface CertificateRepository extends JpaRepository<Certificate, Intege
 			+ "FROM certificate  "
 			+ "WHERE type = 0 AND (Now() BETWEEN valid_from AND valid_until)", nativeQuery = true)
     List<Certificate> getValidIssuers();
+	
+	@Query(value = "SELECT * "
+			+ "FROM certificate  "
+			+ "WHERE type = 0 AND (Now() BETWEEN valid_from AND valid_until) AND user_id = :userId", nativeQuery = true)
+    List<Certificate> getValidIssuers(@Param("userId") Long userId);
 }

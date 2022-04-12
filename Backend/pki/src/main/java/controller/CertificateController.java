@@ -44,6 +44,11 @@ public class CertificateController {
 		return new ResponseEntity<>(certService.convertValidIssuersToDTO(certService.getValidIssuers()), HttpStatus.OK);
 	}
 	
+	@GetMapping(value = "/getValidIssuersForUser/{username}")
+	public ResponseEntity<List<ValidIssuerDTO>> getValidIssuersForUser(@PathVariable String username) {
+		return new ResponseEntity<>(certService.convertValidIssuersToDTO(certService.getValidIssuers(userService.getUserByUsername(username))), HttpStatus.OK);
+	}
+	
 	@PostMapping(value = "/revokeCert/{certificateToRevokeSerialNumber}")
 	public ResponseEntity<String> revokeCert(@PathVariable int certificateToRevokeSerialNumber) {
 		return certService.revokeCert(certificateToRevokeSerialNumber);
