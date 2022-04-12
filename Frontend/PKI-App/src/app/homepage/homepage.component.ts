@@ -14,18 +14,26 @@ export class HomepageComponent implements OnInit {
 
   allCertificates = [] as any;
   currentUser = "";
-  role = -1;
+  role = "";
 
   ngOnInit(): void {
-    this.getAllCertificates()
-
     const helper = new JwtHelperService();
     this.currentUser = helper.decodeToken(localStorage.getItem('token') || '{}').sub;
     this.role = helper.decodeToken(localStorage.getItem('token') || '{}').roles;
+    console.log(helper.decodeToken(localStorage.getItem('token') || '{}'))
+    
+    if(this.role == "admin")
+      this.getAllCertificates()
+    else
+      this.getSubordinateCertificates()
   }
 
   getAllCertificates() {
     this._certificateService.getAllCertificates().subscribe(data => this.allCertificates = data); 
+  }
+
+  getSubordinateCertificates() {
+    this._certificateService.getSubordinateCertificates(this.currentUser).subscribe(data => this.allCertificates = data); 
   }
 
   revokeCertificate(serialNumber: number) {
