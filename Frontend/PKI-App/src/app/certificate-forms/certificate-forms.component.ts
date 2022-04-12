@@ -59,13 +59,17 @@ export class CertificateFormsComponent implements OnInit {
     else
     {
       this.CertDTO.issuerAlias = this.selectedIssuer.alias;
-      if(this.selectedType != "Leaf")
+      if(this.selectedType == "ca")
       {
         this.CertDTO.usage = 0;
       }
-      else
+      else if(this.selectedType == "signing")
       {
         this.CertDTO.usage = 1;
+      }
+      else
+      {
+        this.CertDTO.usage = 2;
       }
       this.createSubCertificate(this.CertDTO)
     }

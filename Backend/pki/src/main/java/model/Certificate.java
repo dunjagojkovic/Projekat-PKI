@@ -53,19 +53,8 @@ public class Certificate {
 	@JoinColumn(nullable = true)
 	private User user;
 
-	@ManyToOne
-	private User user;
-
 	public int getSerialNumber() {
 		return SerialNumber;
-	}
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
 	}
 
 	public void setSerialNumber(int serialNumber) {

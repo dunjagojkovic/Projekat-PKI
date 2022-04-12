@@ -40,4 +40,20 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	public String getEmail() {
+		return email;
+	}
+	public String getType() {
+		return type;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
+	
 }

@@ -72,13 +72,6 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @GetMapping(path = "/users")
-    public ResponseEntity<?> getAllUsers(){
-        List<User> users = userService.findAllByType();
-        return new ResponseEntity<>(users, HttpStatus.OK);
-
-    }
-
     
     @GetMapping(path = "/getAllUsers")
     public ResponseEntity<List<UserDTO>> getAllUsers() {
