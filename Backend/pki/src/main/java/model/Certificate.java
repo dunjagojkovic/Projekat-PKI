@@ -200,12 +200,14 @@ public class Certificate {
 	}
 	
 	public boolean isInIssuerHierarchy(int issuerSerial) {
+		if(this.SerialNumber == issuerSerial)
+			return true;
 		if(this.issuer == null)
 			return false;
 		if(this.issuer.getSerialNumber() == issuerSerial) {
 			return true;
 		}
-		return isInIssuerHierarchy(issuerSerial);
+		return issuer.isInIssuerHierarchy(issuerSerial);
 	}
 	
 }

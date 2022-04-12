@@ -128,24 +128,4 @@ export class CertificateFormsComponent implements OnInit {
     this._certificateService.createSubCertificate(certificate).subscribe(data => console.log("sent sub"),
       error => console.log(error));
   }
-
-  onSubmit() {
-    if(this.form.valid){
-      const username = this.form.get('username')?.value;
-      const password = this.form.get('password')?.value;
-
-      let data = {
-        username: username,
-        password: password
-      }
-
-      this.userService.register(data).subscribe( data => console.log("uspesno"),
-        error =>  this._snackBar.open('Username already exists', 'Close', {duration: 5000})      
-        );
-        
-        
-  }
-}
- 
-
 }
