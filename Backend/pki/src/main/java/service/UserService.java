@@ -2,6 +2,7 @@ package service;
 
 import dto.CreateRootDTO;
 import dto.RegistrationDTO;
+import model.Certificate;
 import model.User;
 
 import java.util.ArrayList;
@@ -22,6 +23,8 @@ public class UserService {
 
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    CertificateService certService;
 
     public User getCurrentUser() {
         String username = SecurityUtils.getCurrentUserLogin().get();
@@ -57,7 +60,17 @@ public class UserService {
     }
     
     public List<User> getAllSubordinateUsersToUser(User user) {
-        return userRepository.findAll();
+    	List<Certificate> subordinateCertificates = certService.getSubordinateCertificates(user);
+    	List<User> allSubordinateUsers =  new ArrayList<User>();
+    	allSubordinateUsers.add(user);
+    	for(Certificate c : subordinateCertificates) 
+    	{
+    		if(c.getUser() != null && !allSubordinateUsers.contains(c.getUser()))
+    		{
+    			allSubordinateUsers.add(c.getUser());
+    		}
+    	}
+    	return allSubordinateUsers;
     }
     
     public User getUserByUsername(String username) {
