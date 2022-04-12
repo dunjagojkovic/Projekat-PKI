@@ -5,8 +5,12 @@ import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
+import org.bouncycastle.asn1.x509.AuthorityInformationAccess;
+import org.bouncycastle.asn1.x509.BasicConstraints;
 import org.bouncycastle.asn1.x509.Extension;
+import org.bouncycastle.asn1.x509.GeneralName;
 import org.bouncycastle.asn1.x509.KeyUsage;
+import org.bouncycastle.asn1.x509.X509ObjectIdentifiers;
 import org.bouncycastle.cert.CertIOException;
 import org.bouncycastle.cert.X509CertificateHolder;
 import org.bouncycastle.cert.X509v3CertificateBuilder;
@@ -21,7 +25,7 @@ import model.CertificateType;
 public class CertificateGenerator {
 	public CertificateGenerator() {}
 	
-	public X509Certificate generateCertificate(SubjectData subjectData, IssuerData issuerData, CertificateType usage) {
+	public X509Certificate generateCertificate(SubjectData subjectData, IssuerData issuerData, CertificateType usage, boolean root, String issuerAlias) {
 		try {
 			//Posto klasa za generisanje sertifiakta ne moze da primi direktno privatni kljuc pravi se builder za objekat
 			//Ovaj objekat sadrzi privatni kljuc izdavaoca sertifikata i koristiti se za potpisivanje sertifikata
@@ -41,14 +45,28 @@ public class CertificateGenerator {
 					subjectData.getX500name(),
 					subjectData.getPublicKey());
 			if(usage.equals(CertificateType.CA)) {
-				certGen.addExtension(Extension.keyUsage, true, new KeyUsage(5));
+				certGen.addExtension(Extension.keyUsage, true, new KeyUsage(KeyUsage.keyCertSign | KeyUsage.cRLSign));
+				certGen.addExtension(Extension.basicConstraints, false, new BasicConstraints(true));
 			}
 			else if(usage.equals(CertificateType.SIGNING)) {
-				certGen.addExtension(Extension.keyUsage, true, new KeyUsage(0));
+				certGen.addExtension(Extension.keyUsage, true, new KeyUsage(KeyUsage.digitalSignature));
+				certGen.addExtension(Extension.basicConstraints, false, new BasicConstraints(false));
 			}
 			else if(usage.equals(CertificateType.KEYAGREEMENT)) {
-				certGen.addExtension(Extension.keyUsage, true, new KeyUsage(4));
+				certGen.addExtension(Extension.keyUsage, true, new KeyUsage(KeyUsage.keyAgreement));
+				certGen.addExtension(Extension.basicConstraints, false, new BasicConstraints(false));
 			}
+			
+			
+	        /*GeneralName ocspName = new GeneralName(GeneralName.uniformResourceIdentifier, "http://localhost:8080");
+	        AuthorityInformationAccess authorityInformationAccess = new AuthorityInformationAccess(X509ObjectIdentifiers.ocspAccessMethod, ocspName);
+	        certGen.addExtension(Extension.authorityInfoAccess, false, authorityInformationAccess);*/
+	        if(!root) {
+		        GeneralName issuerName = new GeneralName(GeneralName.uniformResourceIdentifier, "http://localhost:8080/api/certificates/"+issuerAlias+".cer");
+		        AuthorityInformationAccess authorityInformationAccess2 = new AuthorityInformationAccess(X509ObjectIdentifiers.id_ad_caIssuers, issuerName);
+		        certGen.addExtension(Extension.authorityInfoAccess, false, authorityInformationAccess2);
+	        }
+
 			//Generise se sertifikat
 			X509CertificateHolder certHolder = certGen.build(contentSigner);
 

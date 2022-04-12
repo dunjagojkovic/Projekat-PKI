@@ -82,6 +82,8 @@ export class CertificateFormsComponent implements OnInit {
     }
   }
 
+
+
   ngOnInit(): void {
     const helper = new JwtHelperService();
     this.currentUser = helper.decodeToken(localStorage.getItem('token') || '{}').sub;
@@ -131,4 +133,18 @@ export class CertificateFormsComponent implements OnInit {
     this._certificateService.createSubCertificate(certificate).subscribe(data => console.log("sent sub"),
       error => console.log(error));
   }
+
+  download(){
+    this._certificateService.downloadCertificate().subscribe(response =>{
+
+      let fileName = response.headers.get('content-disposition')?.split(';')[1].split('=')[1];
+      fileName = 'certificate.cer'
+      let blob:Blob = response.body as Blob;
+      let a = document.createElement('a');
+      a.download = fileName;
+      a.href = window.URL.createObjectURL(blob);
+      a.click();
+    });
+  }
+
 }

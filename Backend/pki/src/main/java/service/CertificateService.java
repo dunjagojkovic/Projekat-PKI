@@ -1,5 +1,9 @@
 package service;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.Reader;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
@@ -7,6 +11,7 @@ import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.SecureRandom;
+import java.security.cert.CertificateEncodingException;
 import java.security.cert.X509Certificate;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -15,6 +20,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.bouncycastle.asn1.x500.X500NameBuilder;
 import org.bouncycastle.asn1.x500.style.BCStyle;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -148,12 +154,13 @@ public class CertificateService {
 
 		writer.loadKeyStore("keystore.jks", keystorePass.toCharArray());
 		
-		X509Certificate cert = generator.generateCertificate(createRootSubject(rootDTO, keyPair.getPublic(), Integer.toString(serial)), createRootIssuer(rootDTO, keyPair.getPrivate()),CertificateType.CA);
+		X509Certificate cert = generator.generateCertificate(createRootSubject(rootDTO, keyPair.getPublic(), Integer.toString(serial)), createRootIssuer(rootDTO, keyPair.getPrivate()),CertificateType.CA,true,"");
 		
 		writer.write(rootDTO.getAlias(), keyPair.getPrivate(), rootDTO.getPrivateKeyPass().toCharArray(), cert);
 		writer.saveKeyStore("keystore.jks", keystorePass.toCharArray());
 		Certificate databaseCertificate = new Certificate(serial, CertificateType.CA, false, rootDTO.getCommonName(), rootDTO.getOrganisationUnit(), rootDTO.getOrganisationName(), rootDTO.getEmail(), rootDTO.getAlias(), null, rootDTO.getPrivateKeyPass(),rootDTO.getBegin(),rootDTO.getEnd(), userRepository.findByUsername(rootDTO.getUsername()).get());
 		saveToDatabase(databaseCertificate);
+		saveToFile(rootDTO.getAlias());
 	}
 	
 	
@@ -167,13 +174,14 @@ public class CertificateService {
 
 		writer.loadKeyStore("keystore.jks", keystorePass.toCharArray());
 		
-		X509Certificate cert = generator.generateCertificate(createSubSubject(subDTO, keyPair.getPublic(), Integer.toString(serial)), reader.readIssuerFromStore("keystore.jks", subDTO.getIssuerAlias(), keystorePass.toCharArray(), certificateRepository.findByAlias(subDTO.getIssuerAlias()).getPrivateKeyPass().toCharArray()),subDTO.getUsage());
+		X509Certificate cert = generator.generateCertificate(createSubSubject(subDTO, keyPair.getPublic(), Integer.toString(serial)), reader.readIssuerFromStore("keystore.jks", subDTO.getIssuerAlias(), keystorePass.toCharArray(), certificateRepository.findByAlias(subDTO.getIssuerAlias()).getPrivateKeyPass().toCharArray()),subDTO.getUsage(),false,subDTO.getIssuerAlias());
 		
 		writer.write(subDTO.getAlias(), keyPair.getPrivate(), subDTO.getPrivateKeyPass().toCharArray(), cert);
 		writer.saveKeyStore("keystore.jks", keystorePass.toCharArray());
 
 		Certificate databaseCertificate = new Certificate(serial, subDTO.getUsage(), false, subDTO.getCommonName(), subDTO.getOrganisationUnit(), subDTO.getOrganisationName(), subDTO.getEmail(), subDTO.getAlias(), certificateRepository.findByAlias(subDTO.getIssuerAlias()), subDTO.getPrivateKeyPass(),subDTO.getBegin(),subDTO.getEnd(), userRepository.findByUsername(subDTO.getUsername()).get());
 		saveToDatabase(databaseCertificate);
+		saveToFile(subDTO.getAlias());
 	}
 	
 	public ResponseEntity<String> revokeCert(int certificateToRevokeSerialNumber) {
@@ -272,5 +280,20 @@ public class CertificateService {
 
 	public List<Certificate> getAllCA(){
 		return certificateRepository.findAllByRevokedAndType(false,CertificateType.CA);
+	}
+	
+	public void saveToFile(String alias) {
+		KeyStoreReader reader = new KeyStoreReader();
+		java.security.cert.Certificate x = reader.readCertificate("keystore.jks", "123", alias);
+        try {
+            final FileOutputStream os = new FileOutputStream("certificates"+File.separator+alias+".cer");
+            os.write("-----BEGIN CERTIFICATE-----\n".getBytes("US-ASCII"));
+            os.write(Base64.encodeBase64(x.getEncoded(), true));
+            os.write("-----END CERTIFICATE-----\n".getBytes("US-ASCII"));
+            os.close();
+            
+        } catch (CertificateEncodingException | IOException e) {
+            e.printStackTrace();
+        }
 	}
 }
