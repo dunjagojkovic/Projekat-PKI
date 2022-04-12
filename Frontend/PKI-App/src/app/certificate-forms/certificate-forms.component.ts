@@ -55,6 +55,9 @@ export class CertificateFormsComponent implements OnInit {
   role = "";
 
   submit() {
+    if(!this.CertDTO.username) {
+      this.CertDTO.username = this.currentUser;
+    }
     if(this.isRootSelected()) {
       this.CertDTO.issuerAlias = "";
       this.CertDTO.usage = 0;
