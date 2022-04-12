@@ -12,6 +12,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import model.Certificate;
+import model.User;
 import service.CertificateService;
 import service.UserService;
 
@@ -22,6 +23,8 @@ public class CertificateController {
 
 	@Autowired
 	private CertificateService certService;
+	@Autowired
+	private UserService userService;
 
 	@Autowired
 	private UserService userService;
@@ -32,6 +35,11 @@ public class CertificateController {
 	@GetMapping(value = "/getAllCertificates")
 	public ResponseEntity<List<CertificateDTO>> getAllCertificates() {
 		return new ResponseEntity<>(certService.convertCertificatesToDTO(certService.getAllCertificates()), HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/getSubordinateCertificates/{username}")
+	public ResponseEntity<List<CertificateDTO>> getSubordinateCertificates(@PathVariable String username) {
+		return new ResponseEntity<>(certService.convertCertificatesToDTO(certService.getSubordinateCertificates(userService.getUserByUsername(username))), HttpStatus.OK);
 	}
 	
 	@GetMapping(value = "/getValidIssuers")

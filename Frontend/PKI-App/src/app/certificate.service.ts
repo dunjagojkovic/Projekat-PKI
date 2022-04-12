@@ -23,6 +23,10 @@ export class CertificateService {
     return this.http.get<any[]>("http://localhost:8080/api/certificates/getAllCertificates")
   }
 
+  getSubordinateCertificates(username: string) : Observable<any[]>{
+    return this.http.get<any[]>("http://localhost:8080/api/certificates/getSubordinateCertificates/" + username)
+  }
+
   getValidIssuers() : Observable<any[]>{
     return this.http.get<any[]>("http://localhost:8080/api/certificates/getValidIssuers")
   }

@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.UniqueConstraint;
 
@@ -47,6 +48,10 @@ public class Certificate {
 	
 	@Column
 	private Date validUntil;
+	
+	@ManyToOne
+	@JoinColumn(nullable = true)
+	private User user;
 
 	@ManyToOne
 	private User user;
@@ -155,6 +160,14 @@ public class Certificate {
 
 	public void setValidUntil(Date validUntil) {
 		this.validUntil = validUntil;
+	}
+	
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser (User user) {
+		this.user = user;
 	}
 
 	public Certificate(int serialNumber, CertificateType type, Boolean revoked, String commonName,
