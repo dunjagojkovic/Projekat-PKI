@@ -14,7 +14,9 @@ import dto.CreateRootDTO;
 import dto.CreateSubDTO;
 import dto.ValidIssuerDTO;
 import model.Certificate;
+import model.User;
 import service.CertificateService;
+import service.UserService;
 
 @RestController
 @RequestMapping(value = "api/certificates")
@@ -23,10 +25,17 @@ public class CertificateController {
 
 	@Autowired
 	private CertificateService certService;
+	@Autowired
+	private UserService userService;
 
 	@GetMapping(value = "/getAllCertificates")
 	public ResponseEntity<List<CertificateDTO>> getAllCertificates() {
 		return new ResponseEntity<>(certService.convertCertificatesToDTO(certService.getAllCertificates()), HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/getSubordinateCertificates/{username}")
+	public ResponseEntity<List<CertificateDTO>> getSubordinateCertificates(@PathVariable String username) {
+		return new ResponseEntity<>(certService.convertCertificatesToDTO(certService.getSubordinateCertificates(userService.getUserByUsername(username))), HttpStatus.OK);
 	}
 	
 	@GetMapping(value = "/getValidIssuers")

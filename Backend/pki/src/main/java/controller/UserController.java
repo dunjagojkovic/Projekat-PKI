@@ -2,7 +2,11 @@ package controller;
 
 import dto.LoginDTO;
 import dto.LoginResponseDTO;
+import dto.UserDTO;
 import model.User;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -52,5 +56,14 @@ public class UserController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         return new ResponseEntity<>(auth, HttpStatus.OK);
     }
-
+    
+    @GetMapping(path = "/getAllUsers")
+    public ResponseEntity<List<UserDTO>> getAllUsers() {
+        return new ResponseEntity<>(userService.convertUsersToDTO(userService.getAllUsers()), HttpStatus.OK);
+    }
+    
+    @GetMapping(path = "/getSubordinateUsers/{currentUserUsername}")
+    public ResponseEntity<List<UserDTO>> getSubordinateUsers(@PathVariable String currentUserUsername) {
+        return new ResponseEntity<>(userService.convertUsersToDTO(userService.getAllSubordinateUsersToUser(userService.getUserByUsername(currentUserUsername))), HttpStatus.OK);
+    }
 }

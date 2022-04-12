@@ -34,6 +34,7 @@ import helper.KeyStoreWriter;
 import helper.SubjectData;
 import model.Certificate;
 import model.CertificateType;
+import model.User;
 import repository.CertificateRepository;
 
 @Service
@@ -45,6 +46,26 @@ public class CertificateService {
 	
 	public List<Certificate> getAllCertificates() {
 		return certificateRepository.findAll();
+	}
+	
+	public List<Certificate> getSubordinateCertificates(User user) {
+		List<Certificate> allCertificates = getAllCertificates();
+		List<Certificate> directlyHeldCertificates = certificateRepository.findByUser(user);
+		for(Certificate c : allCertificates)
+			if(directlyHeldCertificates.contains(c))
+				allCertificates.remove(c);
+		for(Certificate c : allCertificates) 
+		{
+			for(Certificate c2: directlyHeldCertificates)
+			{
+				if(c.isInIssuerHierarchy(c2.getSerialNumber()))
+				{
+					directlyHeldCertificates.add(c);
+					break;
+				}
+			}
+		}
+		return directlyHeldCertificates;
 	}
 	
 	public List<Certificate> getValidIssuers() {

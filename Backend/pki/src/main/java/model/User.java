@@ -22,11 +22,12 @@ public class User {
     private String password;
     private String type; //rola
 
-
+    public Long getId() {
+        return this.id;
+    }
     public String getRole() {
         return type.toString();
     }
-    
     public String getUsername() {
 		return username;
 	}
