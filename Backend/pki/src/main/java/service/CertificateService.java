@@ -36,6 +36,7 @@ import model.Certificate;
 import model.CertificateType;
 import model.User;
 import repository.CertificateRepository;
+import repository.UserRepository;
 
 @Service
 public class CertificateService {
@@ -43,7 +44,10 @@ public class CertificateService {
 	private String keystorePass;
 	@Autowired
 	private CertificateRepository certificateRepository;
-	
+
+	@Autowired
+	private UserRepository userRepository;
+
 	public List<Certificate> getAllCertificates() {
 		return certificateRepository.findAll();
 	}
@@ -144,7 +148,7 @@ public class CertificateService {
 		
 		writer.write(rootDTO.getAlias(), keyPair.getPrivate(), rootDTO.getPrivateKeyPass().toCharArray(), cert);
 		writer.saveKeyStore("keystore.jks", keystorePass.toCharArray());
-		Certificate databaseCertificate = new Certificate(serial, CertificateType.CA, false, rootDTO.getCommonName(), rootDTO.getOrganisationUnit(), rootDTO.getOrganisationName(), rootDTO.getEmail(), rootDTO.getAlias(), null, rootDTO.getPrivateKeyPass(),rootDTO.getBegin(),rootDTO.getEnd());
+		Certificate databaseCertificate = new Certificate(serial, CertificateType.CA, false, rootDTO.getCommonName(), rootDTO.getOrganisationUnit(), rootDTO.getOrganisationName(), rootDTO.getEmail(), rootDTO.getAlias(), null, rootDTO.getPrivateKeyPass(),rootDTO.getBegin(),rootDTO.getEnd(), userRepository.findByUsername(rootDTO.getUsername()).get());
 		saveToDatabase(databaseCertificate);
 	}
 	
@@ -164,7 +168,7 @@ public class CertificateService {
 		writer.write(subDTO.getAlias(), keyPair.getPrivate(), subDTO.getPrivateKeyPass().toCharArray(), cert);
 		writer.saveKeyStore("keystore.jks", keystorePass.toCharArray());
 
-		Certificate databaseCertificate = new Certificate(serial, subDTO.getUsage(), false, subDTO.getCommonName(), subDTO.getOrganisationUnit(), subDTO.getOrganisationName(), subDTO.getEmail(), subDTO.getAlias(), certificateRepository.findByAlias(subDTO.getIssuerAlias()), subDTO.getPrivateKeyPass(),subDTO.getBegin(),subDTO.getEnd());
+		Certificate databaseCertificate = new Certificate(serial, subDTO.getUsage(), false, subDTO.getCommonName(), subDTO.getOrganisationUnit(), subDTO.getOrganisationName(), subDTO.getEmail(), subDTO.getAlias(), certificateRepository.findByAlias(subDTO.getIssuerAlias()), subDTO.getPrivateKeyPass(),subDTO.getBegin(),subDTO.getEnd(), userRepository.findByUsername(subDTO.getUsername()).get());
 		saveToDatabase(databaseCertificate);
 	}
 	

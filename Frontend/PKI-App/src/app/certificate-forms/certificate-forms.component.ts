@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CertificateService } from '../certificate.service';
+import { FormBuilder, FormGroup, Validators} from '@angular/forms';
+import { MatSnackBar} from '@angular/material/snack-bar';
+import { UserService } from '../user.service';
 
 @Component({
   selector: 'app-certificate-forms',
@@ -8,9 +11,22 @@ import { CertificateService } from '../certificate.service';
   styleUrls: ['./certificate-forms.component.css']
 })
 export class CertificateFormsComponent implements OnInit {
+  form: FormGroup;
 
-  constructor(private router: Router, private _certificateService: CertificateService) { }
+  constructor(
+    private router: Router,
+    private _certificateService: CertificateService,
+    private userService: UserService,
+    private formBuilder : FormBuilder,
+    private _snackBar: MatSnackBar
+    ) {
+      this.form = this.formBuilder.group({
+        username: ['', Validators.required],
+        password: ['', Validators.required]
+      })
+     }
   hide = true;
+ 
 
   CertDTO = {
     begin:"",
@@ -22,11 +38,14 @@ export class CertificateFormsComponent implements OnInit {
     privateKeyPass : "1234",
     alias: "",
     issuerAlias: "",
-    usage: 0
+    usage: 0,
+    username: "",
+    password: "",
+    userId: null
   }
   selectedIssuer = {
     alias: "",
-    serialNumber: ""
+    serialNumber: "" 
   }
   selectedType = "Root";
   validIssuers = [] as any;
@@ -75,5 +94,24 @@ export class CertificateFormsComponent implements OnInit {
     this._certificateService.createSubCertificate(certificate).subscribe(data => console.log("sent sub"),
       error => console.log(error));
   }
+
+  onSubmit() {
+    if(this.form.valid){
+      const username = this.form.get('username')?.value;
+      const password = this.form.get('password')?.value;
+
+      let data = {
+        username: username,
+        password: password
+      }
+
+      this.userService.register(data).subscribe( data => console.log("uspesno"),
+        error =>  this._snackBar.open('Username already exists', 'Close', {duration: 5000})      
+        );
+        
+        
+  }
+}
+ 
 
 }

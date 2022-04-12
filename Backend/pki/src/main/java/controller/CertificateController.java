@@ -2,17 +2,15 @@ package controller;
 
 import java.util.List;
 
+import dto.*;
+import model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import dto.CertificateCreationDTO;
-import dto.CertificateDTO;
-import dto.CreateRootDTO;
-import dto.CreateSubDTO;
-import dto.ValidIssuerDTO;
 import model.Certificate;
 import model.User;
 import service.CertificateService;
@@ -27,6 +25,12 @@ public class CertificateController {
 	private CertificateService certService;
 	@Autowired
 	private UserService userService;
+
+	@Autowired
+	private UserService userService;
+
+	@Autowired
+	private UserController userController;
 
 	@GetMapping(value = "/getAllCertificates")
 	public ResponseEntity<List<CertificateDTO>> getAllCertificates() {
@@ -65,8 +69,17 @@ public class CertificateController {
 	//@PreAuthorize("hasAuthority('Admin')")
 	@PostMapping(consumes = "application/json", value = "/registerRoot")
 	public ResponseEntity<CreateRootDTO> registerRoot(@RequestBody CreateRootDTO rootDTO) {
+
+		System.out.println(rootDTO);
 		if(certService.validateRoot(rootDTO)) {
-			certService.addRootToKeyStore(rootDTO, certService.generateSerial());
+			if(!rootDTO.getUsername().isBlank()  && !rootDTO.getPassword().isBlank()){
+				userService.registerUser(new RegistrationDTO(rootDTO.getUsername(), rootDTO.getPassword()));
+
+				rootDTO.setUserId(userService.findByUsername(rootDTO.getUsername()).get().getId());
+			}
+
+
+			certService.addRootToKeyStore(rootDTO,  certService.generateSerial());
 			return new ResponseEntity<>(rootDTO, HttpStatus.CREATED);
 		}
 		else {
@@ -81,12 +94,17 @@ public class CertificateController {
 		System.out.println(subDTO.toString());
 
 		if(certService.validateSub(subDTO)) {
+			if(!subDTO.getUsername().isBlank() && !subDTO.getPassword().isBlank()){
+				userService.registerUser(new RegistrationDTO(subDTO.getUsername(), subDTO.getPassword()));
+				subDTO.setUserId(userService.findByUsername(subDTO.getUsername()).get().getId());
+			}
 			certService.addSubToKeyStore(subDTO, certService.generateSerial());
 			return new ResponseEntity<>(subDTO, HttpStatus.CREATED);
 		}
 		else {
 			return new ResponseEntity<>(subDTO, HttpStatus.BAD_REQUEST);
 		}
+
 
 	}
 

@@ -1,7 +1,12 @@
 package dto;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.Date;
 
+@Getter
+@Setter
 public class CreateRootDTO {
 	
 	private String commonName;
@@ -12,10 +17,13 @@ public class CreateRootDTO {
 	private String alias;
 	private Date begin;
 	private Date end;
+	private Long userId;
+	private String username;
+	private String password;
 	
-	public CreateRootDTO(String commonName, String organisationUnit, String organisationName, String email,
-			String privateKeyPass, String alias, Date begin, Date end) {
-		super();
+
+
+	public CreateRootDTO(String commonName, String organisationUnit, String organisationName, String email, String privateKeyPass, String alias, Date begin, Date end, Long userId, String username, String password) {
 		this.commonName = commonName;
 		this.organisationUnit = organisationUnit;
 		this.organisationName = organisationName;
@@ -24,7 +32,11 @@ public class CreateRootDTO {
 		this.alias = alias;
 		this.begin = begin;
 		this.end = end;
+		this.userId = userId;
+		this.username = username;
+		this.password = password;
 	}
+
 	public Date getBegin() {
 		return begin;
 	}
@@ -73,26 +85,33 @@ public class CreateRootDTO {
 	public void setPrivateKeyPass(String privateKeyPass) {
 		this.privateKeyPass = privateKeyPass;
 	}
-	public CreateRootDTO(String commonName, String organisationUnit, String organisationName, String email,
-			String privateKeyPass, String alias) {
-		super();
-		this.commonName = commonName;
-		this.organisationUnit = organisationUnit;
-		this.organisationName = organisationName;
-		this.email = email;
-		this.privateKeyPass = privateKeyPass;
-		this.alias = alias;
+	public Long getUserId() {
+		return userId;
 	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+
 	public CreateRootDTO() {
 		super();
 
 	}
+
 	@Override
 	public String toString() {
-		return "CreateRootDTO [commonName=" + commonName + ", organisationUnit=" + organisationUnit
-				+ ", organisationName=" + organisationName + ", email=" + email + ", privateKeyPass=" + privateKeyPass
-				+ ", alias=" + alias + ", begin=" + begin + ", end=" + end + "]";
+		return "CreateRootDTO{" +
+				"commonName='" + commonName + '\'' +
+				", organisationUnit='" + organisationUnit + '\'' +
+				", organisationName='" + organisationName + '\'' +
+				", email='" + email + '\'' +
+				", privateKeyPass='" + privateKeyPass + '\'' +
+				", alias='" + alias + '\'' +
+				", begin=" + begin +
+				", end=" + end +
+				", userId=" + userId +
+				", username='" + username + '\'' +
+				", password='" + password + '\'' +
+				'}';
 	}
-	
-	
 }

@@ -30,6 +30,10 @@ export class UserService {
     return this.http.get(this.baseURL + "/api/users/current", this.getAuthoHeader());
   }
 
+  register(data: any) {
+    return this.http.post(this.baseURL + "/api/users/register", data,  this.getAuthoHeader());
+  }
+
 
 
 

@@ -2,8 +2,12 @@ package dto;
 
 import java.util.Date;
 
+import lombok.Getter;
+import lombok.Setter;
 import model.CertificateType;
 
+@Getter
+@Setter
 public class CreateSubDTO {
 	
 	private String commonName;
@@ -16,10 +20,13 @@ public class CreateSubDTO {
 	private Date begin;
 	private Date end;
 	private CertificateType usage;
+	private Long userId;
+	private String username;
+	private String password;
 	
-	public CreateSubDTO(String commonName, String organisationUnit, String organisationName, String email,
-			String privateKeyPass, String alias, String issuerAlias, Date begin, Date end, CertificateType usage) {
-		super();
+
+
+	public CreateSubDTO(String commonName, String organisationUnit, String organisationName, String email, String privateKeyPass, String alias, String issuerAlias, Date begin, Date end, CertificateType usage, Long userId, String username, String password) {
 		this.commonName = commonName;
 		this.organisationUnit = organisationUnit;
 		this.organisationName = organisationName;
@@ -30,6 +37,9 @@ public class CreateSubDTO {
 		this.begin = begin;
 		this.end = end;
 		this.usage = usage;
+		this.userId = userId;
+		this.username = username;
+		this.password = password;
 	}
 
 	public CertificateType getUsage() {
@@ -100,12 +110,20 @@ public class CreateSubDTO {
 
 	@Override
 	public String toString() {
-		return "CreateSubDTO [commonName=" + commonName + ", organisationUnit=" + organisationUnit
-				+ ", organisationName=" + organisationName + ", email=" + email + ", privateKeyPass=" + privateKeyPass
-				+ ", alias=" + alias + ", issuerAlias=" + issuerAlias + ", begin=" + begin + ", end=" + end + ", usage="
-				+ usage + "]";
+		return "CreateSubDTO{" +
+				"commonName='" + commonName + '\'' +
+				", organisationUnit='" + organisationUnit + '\'' +
+				", organisationName='" + organisationName + '\'' +
+				", email='" + email + '\'' +
+				", privateKeyPass='" + privateKeyPass + '\'' +
+				", alias='" + alias + '\'' +
+				", issuerAlias='" + issuerAlias + '\'' +
+				", begin=" + begin +
+				", end=" + end +
+				", usage=" + usage +
+				", userId=" + userId +
+				", username='" + username + '\'' +
+				", password='" + password + '\'' +
+				'}';
 	}
-	
-	
-	
 }
