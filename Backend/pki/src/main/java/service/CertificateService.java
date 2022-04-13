@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.bouncycastle.asn1.x500.X500NameBuilder;
@@ -61,20 +62,20 @@ public class CertificateService {
 	public List<Certificate> getSubordinateCertificates(User user) {
 		List<Certificate> allCertificates = getAllCertificates();
 		List<Certificate> directlyHeldCertificates = certificateRepository.findByUser(user);
-		/*for(Certificate c : allCertificates)
-			if(directlyHeldCertificates.contains(c))
-				allCertificates.remove(c);
-		for(Certificate c : allCertificates) 
+		for(Certificate c1 : allCertificates) 
 		{
 			for(Certificate c2: directlyHeldCertificates)
 			{
-				if(c.isInIssuerHierarchy(c2.getSerialNumber()) && !directlyHeldCertificates.contains(c))
+				if(c1.isInIssuerHierarchy(c2.getSerialNumber()))
 				{
-					directlyHeldCertificates.add(c);
+					directlyHeldCertificates.add(c1);
 					break;
 				}
 			}
-		}*/
+		}
+		directlyHeldCertificates = directlyHeldCertificates.stream()
+			     .distinct()
+			     .collect(Collectors.toList());
 		return directlyHeldCertificates;
 	}
 	

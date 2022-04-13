@@ -151,6 +151,34 @@
       </div>
     </div>
   </div>
-  <div class="col-md-4">
+  <div class="col-md-2">
+    <div class="white-panel">
+      <div class="register-show">
+        <h1>Profile</h1>
+        <div style="padding: 10px" *ngFor="let user of users">
+          <div class="row d-flex" style="border-top: 2px solid #9e9e9e; margin-top: 5px;">
+              <div class="col-md-9">
+                  <h2 style="margin-top: 5px; margin-bottom: 0px"><strong>{{user.username}}</strong></h2>
+              </div>
+              <div class="col-md-3" style="margin-top: 10px;">
+                <div class="button_select" *ngIf="(CertDTO.userId != user.id)" (click)="CertDTO.userId = user.id"></div>
+                <div class="button_selected" *ngIf="(CertDTO.userId == user.id)"></div>
+              </div>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <label class="input_label">
+            <input style="font-weight: bolder;" [(ngModel)]="CertDTO.username" id="form2Example11" class="form-control" placeholder="Username"/>
+          </label>
+        </div>
+        <div class="col-md-12">
+          <label class="input_label">
+            <input style="font-weight: bolder;"  type="password" [(ngModel)]="CertDTO.password" id="form2Example22" class="form-control" placeholder="Password" />
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-2">
   </div>
 </div>
