@@ -17,6 +17,7 @@ import security.SecurityUtils;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -70,6 +71,9 @@ public class UserService {
     			allSubordinateUsers.add(c.getUser());
     		}
     	}
+    	allSubordinateUsers = allSubordinateUsers.stream()
+			     .distinct()
+			     .collect(Collectors.toList());
     	return allSubordinateUsers;
     }
     
