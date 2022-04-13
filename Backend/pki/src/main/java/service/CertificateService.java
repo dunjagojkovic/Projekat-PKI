@@ -179,7 +179,7 @@ public class CertificateService {
 		
 		writer.write(subDTO.getAlias(), keyPair.getPrivate(), subDTO.getPrivateKeyPass().toCharArray(), cert);
 		writer.saveKeyStore("keystore.jks", keystorePass.toCharArray());
-
+		System.out.println(subDTO.getIssuerAlias());
 		Certificate databaseCertificate = new Certificate(serial, subDTO.getUsage(), false, subDTO.getCommonName(), subDTO.getOrganisationUnit(), subDTO.getOrganisationName(), subDTO.getEmail(), subDTO.getAlias(), certificateRepository.findByAlias(subDTO.getIssuerAlias()), subDTO.getPrivateKeyPass(),subDTO.getBegin(),subDTO.getEnd(), userRepository.findByUsername(subDTO.getUsername()).get());
 		saveToDatabase(databaseCertificate);
 		saveToFile(subDTO.getAlias());

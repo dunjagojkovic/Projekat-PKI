@@ -92,13 +92,13 @@
                 <label for='root'>Root</label>
             </div>
             <div class="col-md-6">
-              <input type='radio' id='ca' checked='checked' name='radio' class="option_button" value="CA" [(ngModel)]="selectedType">
+              <input type='radio' id='ca' checked='checked' name='radio' class="option_button" value="ca" [(ngModel)]="selectedType">
               <label for='ca'>CA</label>
             </div>
         </div>
         <div class="row d-flex mt-4">
           <div class="col-md-6">
-              <input type='radio' id='signing' name='radio' class="option_button" value="Signing" [(ngModel)]="selectedType">
+              <input type='radio' id='signing' name='radio' class="option_button" value="signing" [(ngModel)]="selectedType">
               <label for='signing'>Signing</label>
           </div>
           <div class="col-md-6">
@@ -127,16 +127,18 @@
       <div class="register-show">
         <h1>Issuers</h1>
         <div style="padding: 10px" *ngFor="let issuer of validIssuers">
-          <div class="row d-flex" style="border-top: 2px solid #9e9e9e; margin-top: 5px;">
-              <div class="col-md-9">
+            <div class="row d-flex">
+              <input type='radio' [attr.id]="'certificate_' + issuer.serialNumber" name='issuerRadio' class="option_button" [value]="issuer" [(ngModel)]="selectedIssuer">
+              <label [attr.for]="'certificate_' + issuer.serialNumber">{{issuer.commonName}}</label>
+            </div>
+              <!--<div class="col-md-9">
                   <h2 style="margin-top: 5px; margin-bottom: 0px"><strong>{{issuer.commonName}}</strong></h2>
                   <span>{{issuer.serialNumber}}</span>
               </div>
               <div class="col-md-3" style="margin-top: 10px;">
                 <div class="button_select" *ngIf="(issuer != selectedIssuer)" (click)="selectedIssuer = issuer"></div>
                 <div class="button_selected" *ngIf="(issuer == selectedIssuer)"></div>
-              </div>
-          </div>
+              </div>-->
         </div>
       </div>
     </div>
@@ -146,14 +148,9 @@
       <div class="register-show">
         <h1>Profile</h1>
         <div style="padding: 10px" *ngFor="let user of users">
-          <div class="row d-flex" style="border-top: 2px solid #9e9e9e; margin-top: 5px;">
-              <div class="col-md-9">
-                  <h2 style="margin-top: 5px; margin-bottom: 0px"><strong>{{user.username}}</strong></h2>
-              </div>
-              <div class="col-md-3" style="margin-top: 10px;">
-                <div class="button_select" *ngIf="(CertDTO.userId != user.id)" (click)="CertDTO.userId = user.id"></div>
-                <div class="button_selected" *ngIf="(CertDTO.userId == user.id)"></div>
-              </div>
+          <div class="row d-flex">
+              <input type='radio' [attr.id]="'user_' + user.id" name='profileRadio' class="option_button" [value]="user.username" [(ngModel)]="CertDTO.username">
+              <label [attr.for]="'user_' + user.id">{{user.username}}</label>
           </div>
         </div>
         <div class="col-md-12">
