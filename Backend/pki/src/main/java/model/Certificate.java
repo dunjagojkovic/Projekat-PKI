@@ -4,6 +4,7 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -37,7 +38,7 @@ public class Certificate {
 	@Column(unique = true)
 	private String alias;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	private Certificate issuer;
 	
 	@Column
@@ -273,5 +274,15 @@ public class Certificate {
 			return false;
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return "Certificate [SerialNumber=" + SerialNumber + ", type=" + type + ", revoked=" + revoked + ", commonName="
+				+ commonName + ", organisationUnit=" + organisationUnit + ", organisationName=" + organisationName
+				+ ", email=" + email + ", alias=" + alias + ", issuer=" + issuer + ", privateKeyPass=" + privateKeyPass
+				+ ", keystoreName=" + keystoreName + ", keystorePass=" + keystorePass + ", validFrom=" + validFrom
+				+ ", validUntil=" + validUntil + ", user=" + user + "]";
+	}
+	
 	
 }

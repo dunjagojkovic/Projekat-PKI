@@ -54,6 +54,10 @@ public class CertificateController {
 
 	@GetMapping(value = "/getAllCertificates")
 	public ResponseEntity<List<CertificateDTO>> getAllCertificates() {
+		for (model.Certificate cert : certService.getAllCertificates()) {
+			if(cert.getIssuer()!=null)
+			System.out.println(cert.getIssuer().toString());
+		}
 		return new ResponseEntity<>(certService.convertCertificatesToDTO(certService.getAllCertificates()), HttpStatus.OK);
 	}
 	
@@ -140,6 +144,17 @@ public class CertificateController {
 		System.out.println("----------------------USA U OCSP JUPI----------------------");
 		OCSPResponse resp = new OCSPResponse(new OCSPResponseStatus(OCSPResponseStatus.SUCCESSFUL), null);
 		return resp;
+	}
+	/*
+	 * 	@GetMapping(value = "/getValidIssuersForUser/{username}")
+	public ResponseEntity<List<ValidIssuerDTO>> getValidIssuersForUser(@PathVariable String username) {
+		return new ResponseEntity<>(certService.convertValidIssuersToDTO(certService.getValidIssuers(userService.getUserByUsername(username))), HttpStatus.OK);
+	}*/
+	
+	@GetMapping(value = "/getCertificateValidity/{serialNumber}")
+	public ResponseEntity<Boolean> checkValidity(@PathVariable String serialNumber) {
+		Boolean isValid = certService.checkValidity(Integer.parseInt(serialNumber));
+		return new ResponseEntity<Boolean>(isValid, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/{file_name}", method = RequestMethod.GET)

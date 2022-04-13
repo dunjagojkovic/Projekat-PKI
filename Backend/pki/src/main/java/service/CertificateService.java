@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.Reader;
+import java.security.InvalidKeyException;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
@@ -11,7 +12,9 @@ import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.SecureRandom;
+import java.security.SignatureException;
 import java.security.cert.CertificateEncodingException;
+import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -299,5 +302,64 @@ public class CertificateService {
         } catch (CertificateEncodingException | IOException e) {
             e.printStackTrace();
         }
+	}
+
+	public Boolean checkValidity(int serialNumber) {
+		// TODO Auto-generated method stub
+		System.out.println("Serijski broj sertifikata: "+serialNumber);
+		KeyStoreReader reader = new KeyStoreReader();
+		Certificate certificate = certificateRepository.findById(serialNumber).orElseGet(null);
+		if(certificate == null) {
+			return false;
+		}
+		ArrayList<Certificate> certList = new ArrayList<>();
+		System.out.println("Pronadjeni sertifikat: "+ certificate.toString());
+		certList.add(certificate);
+		while(certificate.getIssuer()!=null) {
+			certificate = certificate.getIssuer();
+			certList.add(certificate);
+			System.out.println("Ucitavaju se sertifikati u listu!");
+		}
+		
+		System.out.println("Sertifikati ucitani! ("+certList.size()+") je velicina liste!");
+		
+		for (Certificate cert : certList) {
+			System.out.println("********************************");
+			System.out.println(cert.toString());
+			if(cert.getRevoked()) {
+				return false;
+			}
+			System.out.println("Sertifikat nije povucen!");
+			Date now = new Date();
+			if(cert.getValidFrom().after(now) || cert.getValidUntil().before(now)) {
+				return false;
+			}
+			System.out.println("Sertifikat je u roku vazenja!");
+			
+			PublicKey publicKey = null;
+			
+			
+			java.security.cert.Certificate cer1 = reader.readCertificate(cert.getKeystoreName()+".jks", cert.getKeystorePass(), cert.getAlias());
+			
+			//provera za poslednji
+			if(cert.equals(certList.get(certList.size()-1))) {
+				publicKey = cer1.getPublicKey();
+			}
+			else {
+				publicKey = reader.readCertificate(cert.getIssuer().getKeystoreName()+".jks", cert.getIssuer().getKeystorePass(), cert.getIssuer().getAlias()).getPublicKey();
+			}
+			
+			try {
+				cer1.verify(publicKey);
+			} catch (InvalidKeyException | CertificateException | NoSuchAlgorithmException | NoSuchProviderException
+					| SignatureException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				System.out.println("Not valid!");
+				return false;
+			}
+		}
+		
+		return true;
 	}
 }
