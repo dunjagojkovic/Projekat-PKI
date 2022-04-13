@@ -36,13 +36,15 @@ export class CertificateFormsComponent implements OnInit {
     organisationUnit:"",
     organisationName:"",
     email:"",
-    privateKeyPass : "1234",
+    privateKeyPass : "",
     alias: "",
     issuerAlias: "",
     usage: 0,
     username: "",
     password: "",
-    userId: null
+    userId: null,
+    keystoreName:"",
+    keystorePass:''
   }
   selectedIssuer = {
     alias: "",
@@ -66,11 +68,11 @@ export class CertificateFormsComponent implements OnInit {
     else
     {
       this.CertDTO.issuerAlias = this.selectedIssuer.alias;
-      if(this.selectedType == "ca")
+      if(this.selectedType == "CA")
       {
         this.CertDTO.usage = 0;
       }
-      else if(this.selectedType == "signing")
+      else if(this.selectedType == "Signing")
       {
         this.CertDTO.usage = 1;
       }
@@ -135,7 +137,7 @@ export class CertificateFormsComponent implements OnInit {
   }
 
   download(){
-    this._certificateService.downloadCertificate().subscribe(response =>{
+    this._certificateService.downloadCertificate("").subscribe(response =>{
 
       let fileName = response.headers.get('content-disposition')?.split(';')[1].split('=')[1];
       fileName = 'certificate.cer'

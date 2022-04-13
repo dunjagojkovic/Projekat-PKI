@@ -4,7 +4,10 @@ import java.math.BigInteger;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.bouncycastle.asn1.x509.AccessDescription;
 import org.bouncycastle.asn1.x509.AuthorityInformationAccess;
 import org.bouncycastle.asn1.x509.BasicConstraints;
 import org.bouncycastle.asn1.x509.Extension;
@@ -62,9 +65,17 @@ public class CertificateGenerator {
 	        AuthorityInformationAccess authorityInformationAccess = new AuthorityInformationAccess(X509ObjectIdentifiers.ocspAccessMethod, ocspName);
 	        certGen.addExtension(Extension.authorityInfoAccess, false, authorityInformationAccess);*/
 	        if(!root) {
-		        GeneralName issuerName = new GeneralName(GeneralName.uniformResourceIdentifier, "http://localhost:8080/api/certificates/"+issuerAlias+".cer");
-		        AuthorityInformationAccess authorityInformationAccess2 = new AuthorityInformationAccess(X509ObjectIdentifiers.id_ad_caIssuers, issuerName);
-		        certGen.addExtension(Extension.authorityInfoAccess, false, authorityInformationAccess2);
+	        	AccessDescription ocspAd = new AccessDescription(X509ObjectIdentifiers.id_ad_ocsp, new GeneralName(GeneralName.uniformResourceIdentifier, "http://localhost:8080/api/certificates/ocsp"));
+	        	AccessDescription caAd = new AccessDescription(X509ObjectIdentifiers.id_ad_caIssuers,new GeneralName(GeneralName.uniformResourceIdentifier, "http://localhost:8080/api/certificates/"+issuerAlias+".cer"));
+	        	AccessDescription[] accessArray = {ocspAd,caAd};
+		        
+		        AuthorityInformationAccess authInfo = new AuthorityInformationAccess(accessArray);
+	        	//GeneralName issuerName = new GeneralName(GeneralName.uniformResourceIdentifier, "http://localhost:8080/api/certificates/ocsp");
+		        //AuthorityInformationAccess authorityInformationAccess = new AuthorityInformationAccess(X509ObjectIdentifiers.id_ad_ocsp, issuerName);
+		        //GeneralName issuerName2 = new GeneralName(GeneralName.uniformResourceIdentifier, "http://localhost:8080/api/certificates/"+issuerAlias+".cer");
+		        //AuthorityInformationAccess authorityInformationAccess2 = new AuthorityInformationAccess(X509ObjectIdentifiers.id_ad_caIssuers, issuerName2);
+		        //certGen.addExtension(Extension.authorityInfoAccess, true, authorityInformationAccess);
+		        certGen.addExtension(Extension.authorityInfoAccess, true, authInfo);
 	        }
 
 			//Generise se sertifikat

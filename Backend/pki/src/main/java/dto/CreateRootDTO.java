@@ -20,10 +20,13 @@ public class CreateRootDTO {
 	private Long userId;
 	private String username;
 	private String password;
+	private String keystoreName;
+	private String keystorePass;
 	
-
-
-	public CreateRootDTO(String commonName, String organisationUnit, String organisationName, String email, String privateKeyPass, String alias, Date begin, Date end, Long userId, String username, String password) {
+	public CreateRootDTO(String commonName, String organisationUnit, String organisationName, String email,
+			String privateKeyPass, String alias, Date begin, Date end, Long userId, String username, String password,
+			String keystoreName, String keystorePass) {
+		super();
 		this.commonName = commonName;
 		this.organisationUnit = organisationUnit;
 		this.organisationName = organisationName;
@@ -35,6 +38,24 @@ public class CreateRootDTO {
 		this.userId = userId;
 		this.username = username;
 		this.password = password;
+		this.keystoreName = keystoreName;
+		this.keystorePass = keystorePass;
+	}
+
+	public String getKeystoreName() {
+		return keystoreName;
+	}
+
+	public void setKeystoreName(String keystoreName) {
+		this.keystoreName = keystoreName;
+	}
+
+	public String getKeystorePass() {
+		return keystorePass;
+	}
+
+	public void setKeystorePass(String keystorePass) {
+		this.keystorePass = keystorePass;
 	}
 
 	public Date getBegin() {
@@ -116,18 +137,10 @@ public class CreateRootDTO {
 
 	@Override
 	public String toString() {
-		return "CreateRootDTO{" +
-				"commonName='" + commonName + '\'' +
-				", organisationUnit='" + organisationUnit + '\'' +
-				", organisationName='" + organisationName + '\'' +
-				", email='" + email + '\'' +
-				", privateKeyPass='" + privateKeyPass + '\'' +
-				", alias='" + alias + '\'' +
-				", begin=" + begin +
-				", end=" + end +
-				", userId=" + userId +
-				", username='" + username + '\'' +
-				", password='" + password + '\'' +
-				'}';
+		return "CreateRootDTO [commonName=" + commonName + ", organisationUnit=" + organisationUnit
+				+ ", organisationName=" + organisationName + ", email=" + email + ", privateKeyPass=" + privateKeyPass
+				+ ", alias=" + alias + ", begin=" + begin + ", end=" + end + ", userId=" + userId + ", username="
+				+ username + ", password=" + password + ", keystoreName=" + keystoreName + ", keystorePass="
+				+ keystorePass + "]";
 	}
 }

@@ -42,6 +42,10 @@ public class Certificate {
 	
 	@Column
 	private String privateKeyPass;
+	@Column
+	private String keystoreName;
+	@Column
+	private String keystorePass;
 
 	@Column
 	private Date validFrom;
@@ -52,6 +56,28 @@ public class Certificate {
 	@ManyToOne
 	@JoinColumn(nullable = true)
 	private User user;
+
+	public Certificate(int serialNumber, CertificateType type, Boolean revoked, String commonName,
+			String organisationUnit, String organisationName, String email, String alias, Certificate issuer,
+			String privateKeyPass, String keystoreName, String keystorePass, Date validFrom, Date validUntil,
+			User user) {
+		super();
+		SerialNumber = serialNumber;
+		this.type = type;
+		this.revoked = revoked;
+		this.commonName = commonName;
+		this.organisationUnit = organisationUnit;
+		this.organisationName = organisationName;
+		this.email = email;
+		this.alias = alias;
+		this.issuer = issuer;
+		this.privateKeyPass = privateKeyPass;
+		this.keystoreName = keystoreName;
+		this.keystorePass = keystorePass;
+		this.validFrom = validFrom;
+		this.validUntil = validUntil;
+		this.user = user;
+	}
 
 	public int getSerialNumber() {
 		return SerialNumber;
@@ -135,6 +161,22 @@ public class Certificate {
 
 	
 	
+	public String getKeystoreName() {
+		return keystoreName;
+	}
+
+	public void setKeystoreName(String keystoreName) {
+		this.keystoreName = keystoreName;
+	}
+
+	public String getKeystorePass() {
+		return keystorePass;
+	}
+
+	public void setKeystorePass(String keystorePass) {
+		this.keystorePass = keystorePass;
+	}
+
 	public Date getValidFrom() {
 		return validFrom;
 	}

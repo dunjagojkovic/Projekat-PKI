@@ -23,10 +23,14 @@ public class CreateSubDTO {
 	private Long userId;
 	private String username;
 	private String password;
-	
+	private String keystoreName;
+	private String keystorePass;
 
 
-	public CreateSubDTO(String commonName, String organisationUnit, String organisationName, String email, String privateKeyPass, String alias, String issuerAlias, Date begin, Date end, CertificateType usage, Long userId, String username, String password) {
+	public CreateSubDTO(String commonName, String organisationUnit, String organisationName, String email,
+			String privateKeyPass, String alias, String issuerAlias, Date begin, Date end, CertificateType usage,
+			Long userId, String username, String password, String keystoreName, String keystorePass) {
+		super();
 		this.commonName = commonName;
 		this.organisationUnit = organisationUnit;
 		this.organisationName = organisationName;
@@ -40,6 +44,24 @@ public class CreateSubDTO {
 		this.userId = userId;
 		this.username = username;
 		this.password = password;
+		this.keystoreName = keystoreName;
+		this.keystorePass = keystorePass;
+	}
+
+	public String getKeystoreName() {
+		return keystoreName;
+	}
+
+	public void setKeystoreName(String keystoreName) {
+		this.keystoreName = keystoreName;
+	}
+
+	public String getKeystorePass() {
+		return keystorePass;
+	}
+
+	public void setKeystorePass(String keystorePass) {
+		this.keystorePass = keystorePass;
 	}
 
 	public CertificateType getUsage() {
@@ -134,20 +156,10 @@ public class CreateSubDTO {
 
 	@Override
 	public String toString() {
-		return "CreateSubDTO{" +
-				"commonName='" + commonName + '\'' +
-				", organisationUnit='" + organisationUnit + '\'' +
-				", organisationName='" + organisationName + '\'' +
-				", email='" + email + '\'' +
-				", privateKeyPass='" + privateKeyPass + '\'' +
-				", alias='" + alias + '\'' +
-				", issuerAlias='" + issuerAlias + '\'' +
-				", begin=" + begin +
-				", end=" + end +
-				", usage=" + usage +
-				", userId=" + userId +
-				", username='" + username + '\'' +
-				", password='" + password + '\'' +
-				'}';
+		return "CreateSubDTO [commonName=" + commonName + ", organisationUnit=" + organisationUnit
+				+ ", organisationName=" + organisationName + ", email=" + email + ", privateKeyPass=" + privateKeyPass
+				+ ", alias=" + alias + ", issuerAlias=" + issuerAlias + ", begin=" + begin + ", end=" + end + ", usage="
+				+ usage + ", userId=" + userId + ", username=" + username + ", password=" + password + ", keystoreName="
+				+ keystoreName + ", keystorePass=" + keystorePass + "]";
 	}
 }

@@ -9,6 +9,11 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.bouncycastle.asn1.ocsp.OCSPRequest;
+import org.bouncycastle.asn1.ocsp.OCSPResponse;
+import org.bouncycastle.asn1.ocsp.OCSPResponseStatus;
+import org.bouncycastle.asn1.ocsp.ResponseBytes;
+import org.bouncycastle.cert.ocsp.OCSPReq;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpHeaders;
@@ -90,7 +95,6 @@ public class CertificateController {
 	@PostMapping(consumes = "application/json", value = "/registerRoot")
 	public ResponseEntity<CreateRootDTO> registerRoot(@RequestBody CreateRootDTO rootDTO) {
 
-		System.out.println(rootDTO);
 		if(certService.validateRoot(rootDTO)) {
 			if(!rootDTO.getUsername().isBlank()  && !rootDTO.getPassword().isBlank()){
 				userService.registerUser(new RegistrationDTO(rootDTO.getUsername(), rootDTO.getPassword()));
@@ -128,21 +132,28 @@ public class CertificateController {
 
 	}
 	
+	@PostMapping(consumes = "application/ocsp-request", value = "/ocsp", produces = "application/ocsp-response")
+	public OCSPResponse ocsp(@RequestBody byte[] reqBytes) throws IOException {
+		System.out.println("----------------------USA U OCSP JUPI----------------------");
+		OCSPReq req = new OCSPReq(reqBytes);
+		System.out.println(req.toString());
+		System.out.println("----------------------USA U OCSP JUPI----------------------");
+		OCSPResponse resp = new OCSPResponse(new OCSPResponseStatus(OCSPResponseStatus.SUCCESSFUL), null);
+		return resp;
+	}
+	
 	@RequestMapping(value = "/{file_name}", method = RequestMethod.GET)
 	@ResponseBody
 	public ResponseEntity<byte[]> getFile(@PathVariable("file_name") String fileName) throws FileNotFoundException {
-		
 		String path = "certificates"+File.separator+fileName;
 		File file = new File(path);
 		
-		// retrieve contents of "C:/tmp/report.pdf" that were written in showHelp
 	    byte[] contents;
 		try {
 			
 			contents = Files.readAllBytes(file.toPath());
 			HttpHeaders headers = new HttpHeaders();
 			headers.add("Content-Type", "application/x-x509-ca-cert");
-		    // Here you have to set the actual filename of your pdf
 		    headers.setContentDispositionFormData(fileName, fileName);
 		    headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
 		    ResponseEntity<byte[]> response = new ResponseEntity<>(contents, headers, HttpStatus.OK);

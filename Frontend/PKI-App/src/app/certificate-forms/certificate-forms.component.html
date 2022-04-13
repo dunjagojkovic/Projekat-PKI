@@ -50,16 +50,22 @@
         <div class="row d-flex mt-5" *ngIf="isRootSelected()">
           <div class="col-md-6">
             <label class="input_label">
-              <input type="text" name="keystoreName" required="required">
+              <input type="text" name="keystoreName" [(ngModel)]="CertDTO.keystoreName" required="required">
               <span class="keep_hovered">Keystore Name</span>
             </label>
           </div>
           <div class="col-md-6">
             <label class="input_label">
-              <input type="text" name="keystorePassword" required="required">
+              <input type="password" name="keystorePassword" [(ngModel)]="CertDTO.keystorePass" required="required">
               <span class="keep_hovered">Keystore Password</span>
             </label>
           </div>
+      </div>
+      <div class="col-md-6">
+        <label class="input_label">
+          <input type="password" name="privKeyPass" [(ngModel)]="CertDTO.privateKeyPass" required="required">
+          <span class="keep_hovered">Private Key Password</span>
+        </label>
       </div>
         <div class="row d-flex mt-5">
           <div class="col-md-12">
@@ -74,14 +80,6 @@
               <label class="input_label">
                   <input type="email" name="email" [(ngModel)]="CertDTO.email" required="required">
                   <span class="keep_hovered">E-Mail</span>
-              </label>
-          </div>
-        </div>
-        <div class="row d-flex mt-5">
-          <div class="col-md-12">
-              <label class="input_label">
-                  <input type="text" name="alternativeName" required="required">
-                  <span class="keep_hovered">Alternative DNS Name</span>
               </label>
           </div>
         </div>
@@ -118,6 +116,18 @@
               </div>
             </div>
         </div>
+        <div class="row d-flex mt-4">
+        <div class="col-md-12">
+          <label class="input_label">
+            <input style="font-weight: bolder;" [(ngModel)]="CertDTO.username" id="form2Example11" class="form-control" placeholder="Username"/>
+          </label>
+        </div>
+        <div class="col-md-12">
+          <label class="input_label">
+            <input style="font-weight: bolder;"  type="password" [(ngModel)]="CertDTO.password" id="form2Example22" class="form-control" placeholder="Password" />
+          </label>
+        </div>
+        </div>
         <input type="button" value="Create" (click)="submit()"/>
       </div>
     </div>
@@ -137,18 +147,6 @@
                 <div class="button_selected" *ngIf="(issuer == selectedIssuer)"></div>
               </div>
           </div>
-        </div>
-        <div class="col-md-12">
-          <label class="input_label">
-            <input style="font-weight: bolder;" [(ngModel)]="CertDTO.username" id="form2Example11" class="form-control" placeholder="Username"/>
-            <span class="keep_hovered">username</span>
-          </label>
-        </div>
-        <div class="col-md-12">
-          <label class="input_label">
-            <input style="font-weight: bolder;"  type="password" [(ngModel)]="CertDTO.password" id="form2Example22" class="form-control" placeholder="Password" />
-            <span class="keep_hovered">password</span>
-          </label>
         </div>
       </div>
     </div>

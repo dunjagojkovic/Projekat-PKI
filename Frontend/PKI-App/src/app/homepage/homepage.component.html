@@ -32,6 +32,7 @@
             <td>{{c.organisationUnit}}</td>
             <td>{{c.issuer}}</td>
             <td><input type="button" value="Revoke" *ngIf="!c.revoked" (click)="revokeCertificate(c.serialNumber)"/></td>
+            <td><input type="button" value="Download" (click)="download(c.alias)"/></td>
           </tr>
         </tbody>
       </table>

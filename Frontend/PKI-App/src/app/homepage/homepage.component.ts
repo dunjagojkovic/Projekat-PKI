@@ -45,4 +45,17 @@ export class HomepageComponent implements OnInit {
     localStorage.clear();
   }
 
+  download(alias : string){
+    this._certificateService.downloadCertificate(alias).subscribe(response =>{
+
+      let fileName = response.headers.get('content-disposition')?.split(';')[1].split('=')[1];
+      fileName = alias+'.cer'
+      let blob:Blob = response.body as Blob;
+      let a = document.createElement('a');
+      a.download = fileName;
+      a.href = window.URL.createObjectURL(blob);
+      a.click();
+    });
+  }
+
 }
