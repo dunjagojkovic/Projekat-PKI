@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CertificateService } from '../certificate.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { validateHorizontalPosition } from '@angular/cdk/overlay';
 
 @Component({
   selector: 'app-homepage',
@@ -43,6 +44,11 @@ export class HomepageComponent implements OnInit {
 
   logout(){
     localStorage.clear();
+  }
+
+  checkValidity(serialNumber: number){
+    this._certificateService.checkValidity(serialNumber).subscribe(data => alert(data),
+      error => console.log(error));
   }
 
   download(alias : string){

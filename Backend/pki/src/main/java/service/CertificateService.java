@@ -184,10 +184,8 @@ public class CertificateService {
 		X509Certificate cert = generator.generateCertificate(createSubSubject(subDTO, keyPair.getPublic(), Integer.toString(serial)), reader.readIssuerFromStore(subDTO.getKeystoreName()+".jks", subDTO.getIssuerAlias(), keystorePass.toCharArray(), certificateRepository.findByAlias(subDTO.getIssuerAlias()).getPrivateKeyPass().toCharArray()),subDTO.getUsage(),false,subDTO.getIssuerAlias());
 		
 		writer.write(subDTO.getAlias(), keyPair.getPrivate(), subDTO.getPrivateKeyPass().toCharArray(), cert);
-		writer.saveKeyStore("keystore.jks", keystorePass.toCharArray());
-		System.out.println(subDTO.getIssuerAlias());
-		Certificate databaseCertificate = new Certificate(serial, subDTO.getUsage(), false, subDTO.getCommonName(), subDTO.getOrganisationUnit(), subDTO.getOrganisationName(), subDTO.getEmail(), subDTO.getAlias(), certificateRepository.findByAlias(subDTO.getIssuerAlias()), subDTO.getPrivateKeyPass(),subDTO.getBegin(),subDTO.getEnd(), userRepository.findByUsername(subDTO.getUsername()).get());
-		saveToDatabase(databaseCertificate);
+		writer.saveKeyStore(subDTO.getKeystoreName()+".jks", keystorePass.toCharArray());
+        Certificate databaseCertificate = new Certificate(serial, subDTO.getUsage(), false, subDTO.getCommonName(), subDTO.getOrganisationUnit(), subDTO.getOrganisationName(), subDTO.getEmail(), subDTO.getAlias(), certificateRepository.findByAlias(subDTO.getIssuerAlias()), subDTO.getPrivateKeyPass(),subDTO.getKeystoreName(),subDTO.getKeystorePass(),subDTO.getBegin(),subDTO.getEnd(), userRepository.findByUsername(subDTO.getUsername()).get());	saveToDatabase(databaseCertificate);
 		saveToFile(subDTO.getAlias());
 	}
 	

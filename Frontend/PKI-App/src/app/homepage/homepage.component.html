@@ -33,6 +33,7 @@
             <td>{{c.issuer}}</td>
             <td><input type="button" value="Revoke" *ngIf="!c.revoked" (click)="revokeCertificate(c.serialNumber)"/></td>
             <td><input type="button" value="Download" (click)="download(c.alias)"/></td>
+            <td><input type="button" value="Validate" (click)="checkValidity(c.serialNumber)"/></td>
           </tr>
         </tbody>
       </table>

@@ -51,6 +51,10 @@ export class CertificateService {
     return this.http.post<any>("http://localhost:8080/api/certificates/revokeCert/" + serialNumber , this.getAuthoHeader() );
   }
 
+  checkValidity(serialNumber: number) : Observable<any>{
+    return this.http.get<any>("http://localhost:8080/api/certificates/getCertificateValidity/" + serialNumber, this.getAuthoHeader());
+  }
+
   public downloadCertificate(alias : string){
     const requestOptions: Object = {
       /* other options here */

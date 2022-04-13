@@ -90,13 +90,13 @@
                 <label for='root'>Root</label>
             </div>
             <div class="col-md-6">
-              <input type='radio' id='ca' checked='checked' name='radio' class="option_button" value="ca" [(ngModel)]="selectedType">
+              <input type='radio' id='ca' checked='checked' name='radio' class="option_button" value="CA" [(ngModel)]="selectedType">
               <label for='ca'>CA</label>
             </div>
         </div>
         <div class="row d-flex mt-4">
           <div class="col-md-6">
-              <input type='radio' id='signing' name='radio' class="option_button" value="signing" [(ngModel)]="selectedType">
+              <input type='radio' id='signing' name='radio' class="option_button" value="Signing" [(ngModel)]="selectedType">
               <label for='signing'>Signing</label>
           </div>
           <div class="col-md-6">
@@ -116,18 +116,7 @@
               </div>
             </div>
         </div>
-        <div class="row d-flex mt-4">
-        <div class="col-md-12">
-          <label class="input_label">
-            <input style="font-weight: bolder;" [(ngModel)]="CertDTO.username" id="form2Example11" class="form-control" placeholder="Username"/>
-          </label>
-        </div>
-        <div class="col-md-12">
-          <label class="input_label">
-            <input style="font-weight: bolder;"  type="password" [(ngModel)]="CertDTO.password" id="form2Example22" class="form-control" placeholder="Password" />
-          </label>
-        </div>
-        </div>
+       
         <input type="button" value="Create" (click)="submit()"/>
       </div>
     </div>

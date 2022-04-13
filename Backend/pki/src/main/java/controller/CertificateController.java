@@ -120,18 +120,20 @@ public class CertificateController {
 	@PostMapping(consumes = "application/json", value = "/registerSub")
 	public ResponseEntity<CreateSubDTO> registerSub(@RequestBody CreateSubDTO subDTO) {
 		System.out.println(subDTO.toString());
-
+		
 		if(certService.validateSub(subDTO)) {
 			if(!subDTO.getUsername().isBlank() && !subDTO.getPassword().isBlank()){
 				userService.registerUser(new RegistrationDTO(subDTO.getUsername(), subDTO.getPassword()));
 				subDTO.setUserId(userService.findByUsername(subDTO.getUsername()).get().getId());
 			}
+			System.out.println("Pre servisa "+subDTO.toString());
 			certService.addSubToKeyStore(subDTO, certService.generateSerial());
 			return new ResponseEntity<>(subDTO, HttpStatus.CREATED);
 		}
 		else {
 			return new ResponseEntity<>(subDTO, HttpStatus.BAD_REQUEST);
 		}
+		
 
 
 	}
