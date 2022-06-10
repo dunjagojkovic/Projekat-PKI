@@ -12,12 +12,6 @@ import java.security.Security;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
-@RestController
-@EnableJpaRepositories("repository")
-@EntityScan("model")
-@ComponentScan({"controller"})
-@ComponentScan({"service"})
-@ComponentScan({"security"})
 @SpringBootApplication
 public class PkiApplication {
 	
