@@ -45,7 +45,12 @@ export class FrontpageComponent implements OnInit {
       }
 
       this.service.login(data).subscribe((any: any) => {
-        localStorage.setItem('token', any.token), () => this.router.navigateByUrl("/home");
+        if(any.token!=null){
+          localStorage.setItem('token', any.token);
+          this.router.navigateByUrl("/home");
+        }     
+        else
+        alert(any);
 /*
         this.service.current().subscribe((user: any) => {
           localStorage.setItem('user', JSON.stringify(user)), () => this.router.navigate(["/home"]);

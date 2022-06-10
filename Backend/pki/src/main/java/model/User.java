@@ -4,7 +4,12 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
+/**
+ * @author PC
+ *
+ */
 @Entity
 @Table(name = "user_table")
 @Getter
@@ -21,8 +26,55 @@ public class User {
     private String email;
     private String password;
     private String type; //rola
+	private String activationCode;
+	private boolean activated;
+	private LocalDateTime activationCodeValidity;
+	private String passwordResetCode;
+	private LocalDateTime passwordResetCodeValidity;
+	private String loginCode;
+	private LocalDateTime loginCodeValidity;
 
-    public Long getId() {
+	public LocalDateTime getActivationCodeValidity() {
+		return activationCodeValidity;
+	}
+
+	public void setActivationCodeValidity(LocalDateTime activationCodeValidity) {
+		this.activationCodeValidity = activationCodeValidity;
+	}
+
+	public String getPasswordResetCode() {
+		return passwordResetCode;
+	}
+
+	public void setPasswordResetCode(String passwordResetCode) {
+		this.passwordResetCode = passwordResetCode;
+	}
+
+	public LocalDateTime getPasswordResetCodeValidity() {
+		return passwordResetCodeValidity;
+	}
+
+	public void setPasswordResetCodeValidity(LocalDateTime passwordResetCodeValidity) {
+		this.passwordResetCodeValidity = passwordResetCodeValidity;
+	}
+
+	public String getLoginCode() {
+		return loginCode;
+	}
+
+	public void setLoginCode(String loginCode) {
+		this.loginCode = loginCode;
+	}
+
+	public LocalDateTime getLoginCodeValidity() {
+		return loginCodeValidity;
+	}
+
+	public void setLoginCodeValidity(LocalDateTime loginCodeValidity) {
+		this.loginCodeValidity = loginCodeValidity;
+	}
+
+	public Long getId() {
         return this.id;
     }
     public String getRole() {
@@ -54,6 +106,19 @@ public class User {
 	}
 	public void setType(String type) {
 		this.type = type;
+	}
+	
+	public String getActivationCode() {
+		return activationCode;
+	}
+	public void setActivationCode(String activationCode) {
+		this.activationCode = activationCode;
+	}
+	public boolean isActivated() {
+		return activated;
+	}
+	public void setActivated(boolean activated) {
+		this.activated = activated;
 	}
 	@Override
 	public int hashCode() {

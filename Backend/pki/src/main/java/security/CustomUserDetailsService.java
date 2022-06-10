@@ -55,5 +55,5 @@ public class CustomUserDetailsService implements UserDetailsService {
         return authorities;
     }
 
-    public User findUserByUserName(String username) { return userRepository.findByUsername(username).get(); }
+    public User findUserByUserName(String username) { return userRepository.findByUsername(username).orElse(null); }
 }
