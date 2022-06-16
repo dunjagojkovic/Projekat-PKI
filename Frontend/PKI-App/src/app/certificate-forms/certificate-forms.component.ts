@@ -27,7 +27,7 @@ export class CertificateFormsComponent implements OnInit {
       })
      }
   hide = true;
- 
+
 
   CertDTO = {
     begin:"",
@@ -48,7 +48,7 @@ export class CertificateFormsComponent implements OnInit {
   }
   selectedIssuer = {
     alias: "",
-    serialNumber: "" 
+    serialNumber: ""
   }
   selectedType = "Root";
   validIssuers = [] as any;
@@ -91,7 +91,7 @@ export class CertificateFormsComponent implements OnInit {
     this.currentUser = helper.decodeToken(localStorage.getItem('token') || '{}').sub;
     this.role = helper.decodeToken(localStorage.getItem('token') || '{}').roles;
     console.log(helper.decodeToken(localStorage.getItem('token') || '{}'))
-    
+
     if(this.role == "Admin")
     {
       this.getAllUsers()
@@ -111,19 +111,19 @@ export class CertificateFormsComponent implements OnInit {
   }
 
   getValidIssuers() {
-    this._certificateService.getValidIssuers().subscribe(data => this.validIssuers = data); 
+    this._certificateService.getValidIssuers().subscribe(data => this.validIssuers = data);
   }
 
   getValidIssuersForUser() {
-    this._certificateService.getValidIssuersForUser(this.currentUser).subscribe(data => this.validIssuers = data); 
+    this._certificateService.getValidIssuersForUser(this.currentUser).subscribe(data => this.validIssuers = data);
   }
 
   getAllUsers() {
-    this.userService.getAllUsers().subscribe(data => this.users = data); 
+    this.userService.getAllUsers().subscribe(data => this.users = data);
   }
 
   getSubordinateUsers() {
-    this.userService.getSubordinateUsers(this.currentUser).subscribe(data => this.users = data); 
+    this.userService.getSubordinateUsers(this.currentUser).subscribe(data => this.users = data);
   }
 
   createRootCertificate(certificate: any) {

@@ -5,28 +5,28 @@ import { FormBuilder, Validators} from '@angular/forms';
 import { MatSnackBar} from '@angular/material/snack-bar';
 import { UserService } from '../user.service';
 
-@Component({
-  selector: 'app-frontpage',
-  templateUrl: './frontpage.component.html',
-  styleUrls: ['./frontpage.component.css']
-})
-export class FrontpageComponent implements OnInit {
 
+@Component({
+  selector: 'app-front-page-code',
+  templateUrl: './front-page-code.component.html',
+  styleUrls: ['./front-page-code.component.css']
+})
+export class FrontPageCodeComponent implements OnInit {
   user: any;
   hide = true;
   form: FormGroup;
 
-    constructor(
+  constructor(
     private router: Router,
     private formBuilder : FormBuilder,
     private service: UserService,
     private _snackBar: MatSnackBar
-    ) {
-      this.form = this.formBuilder.group({
-        username: ['', Validators.required],
-        password: ['', Validators.required]
-      })
-     }
+  ) {
+    this.form = this.formBuilder.group({
+      username: ['', Validators.required],
+      code: ['', Validators.required]
+    })
+  }
 
 
   ngOnInit(): void {
@@ -37,11 +37,11 @@ export class FrontpageComponent implements OnInit {
   onSubmit() {
     if(this.form.valid){
       const username = this.form.get('username')?.value;
-      const password = this.form.get('password')?.value;
+      const code = this.form.get('code')?.value;
 
       let data = {
         username: username,
-        password: password
+        code: code
       }
 
       this.service.login(data).subscribe((any: any) => {
@@ -50,32 +50,32 @@ export class FrontpageComponent implements OnInit {
           this.router.navigateByUrl("/home");
         }
         else
-        alert(any);
-/*
-        this.service.current().subscribe((user: any) => {
-          localStorage.setItem('user', JSON.stringify(user)), () => this.router.navigate(["/home"]);
-          console.log(user);
-        }, error => {
-          this._snackBar.open('Incorrect credentials! Please try again.', 'Close', {duration: 2000})});*/
+          alert(any);
+        /*
+                this.service.current().subscribe((user: any) => {
+                  localStorage.setItem('user', JSON.stringify(user)), () => this.router.navigate(["/home"]);
+                  console.log(user);
+                }, error => {
+                  this._snackBar.open('Incorrect credentials! Please try again.', 'Close', {duration: 2000})});*/
       })
     }
   }
 
-  resetPassword() {
+  sendCode() {
     const username = this.form.get('username')?.value
     console.log(username)
+
     let data = {
       username: username
     }
-    if (username=='' || username==null){
-      alert("Enter username first!")
-      return;
-    }
-    this.service.resetPass(data).subscribe((any: any) => {
-      this._snackBar.open('Check your email!', 'Close', {duration: 2000});
+     console.log(username);
+
+    this.service.sendEmailCode(data).subscribe((any: any) => {
+      this._snackBar.open('We sent a code to your email!', 'Close', {duration: 2000});
       console.log(any);
     }, error => {
       console.log(error)
       this._snackBar.open('Something is wrong!', 'Close', {duration: 2000})})
+
   }
 }

@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 })
 export class UserService {
 
- 
+
   baseURL = "http://localhost:8080";
 
   constructor(private http: HttpClient) { }
@@ -21,7 +21,7 @@ export class UserService {
     return{
       headers: headers
     };
-  }  
+  }
 
   getAllUsers() : Observable<any[]>{
     return this.http.get<any[]>(this.baseURL + "/api/users/getAllUsers")
@@ -41,5 +41,24 @@ export class UserService {
 
   register(data: any) {
     return this.http.post(this.baseURL + "/api/users/register", data,  this.getAuthoHeader());
+  }
+
+  activateAccount(code: any){
+    return this.http.post(this.baseURL + "/api/users/checkActivationCode", code, {responseType:'text'})
+  }
+
+  sendEmailCode(data: any) {
+    console.log("in send email")
+    return this.http.post(this.baseURL + "/api/users/loginCode", data, {responseType:'text'})
+  }
+
+  resetPass( data: any) {
+    console.log("in reset")
+    return this.http.post(this.baseURL + "/api/users/forgottenpassword", data, {responseType:'text'} )
+  }
+
+  newPass(data: any) {
+    console.log("sending new pass")
+    return this.http.post(this.baseURL + "/api/users/checkForgottenPassword", data)
   }
 }

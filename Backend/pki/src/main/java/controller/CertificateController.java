@@ -4,21 +4,16 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.security.cert.Certificate;
 import java.util.List;
 
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletRequest;
 
-import org.bouncycastle.asn1.ocsp.OCSPRequest;
 import org.bouncycastle.asn1.ocsp.OCSPResponse;
 import org.bouncycastle.asn1.ocsp.OCSPResponseStatus;
-import org.bouncycastle.asn1.ocsp.ResponseBytes;
 import org.bouncycastle.cert.ocsp.OCSPReq;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -97,11 +92,11 @@ public class CertificateController {
 
 	//@PreAuthorize("hasAuthority('Admin')")
 	@PostMapping(consumes = "application/json", value = "/registerRoot")
-	public ResponseEntity<CreateRootDTO> registerRoot(@RequestBody CreateRootDTO rootDTO) {
+	public ResponseEntity<CreateRootDTO> registerRoot(HttpServletRequest request, @RequestBody CreateRootDTO rootDTO) {
 
 		if(certService.validateRoot(rootDTO)) {
 			if(!rootDTO.getUsername().isBlank()  && !rootDTO.getPassword().isBlank()){
-				userService.registerUser(new RegistrationDTO(rootDTO.getUsername(), rootDTO.getPassword()));
+				userService.registerUser(request, new RegistrationDTO(rootDTO.getUsername(), rootDTO.getPassword(), rootDTO.getEmail()));
 
 				rootDTO.setUserId(userService.findByUsername(rootDTO.getUsername()).get().getId());
 			}
@@ -118,12 +113,12 @@ public class CertificateController {
 	}
 
 	@PostMapping(consumes = "application/json", value = "/registerSub")
-	public ResponseEntity<CreateSubDTO> registerSub(@RequestBody CreateSubDTO subDTO) {
+	public ResponseEntity<CreateSubDTO> registerSub(HttpServletRequest request, @RequestBody CreateSubDTO subDTO) {
 		System.out.println(subDTO.toString());
 		
 		if(certService.validateSub(subDTO)) {
 			if(!subDTO.getUsername().isBlank() && !subDTO.getPassword().isBlank()){
-				userService.registerUser(new RegistrationDTO(subDTO.getUsername(), subDTO.getPassword()));
+				userService.registerUser(request, new RegistrationDTO(subDTO.getUsername(), subDTO.getPassword(), subDTO.getEmail()));
 				subDTO.setUserId(userService.findByUsername(subDTO.getUsername()).get().getId());
 			}
 			System.out.println("Pre servisa "+subDTO.toString());

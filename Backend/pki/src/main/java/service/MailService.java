@@ -28,9 +28,11 @@ public class MailService<T>{
         message.setFrom("dislinkt.xml@gmail.com");
         message.setTo(recipient);
         message.setText(formatter.getText(activationCode, siteUrl));
+        System.out.println("Site url:"+siteUrl);
+        System.out.println("Recipient" + recipient);
         message.setSubject(formatter.getSubject());
 
-
+        System.out.println(message.toString());
         mailSender.send(message);
     }
 

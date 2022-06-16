@@ -17,6 +17,10 @@ import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatSnackBarModule} from '@angular/material/snack-bar';
 import { UserService } from './user.service';
+import { PasswordResetComponent } from './password-reset/password-reset.component';
+import { SuccessfulActivationComponent } from './successful-activation/successful-activation.component';
+import { UserActivationComponent } from './user-activation/user-activation.component';
+import { FrontPageCodeComponent } from './front-page-code/front-page-code.component';
 
 
 
@@ -26,7 +30,11 @@ import { UserService } from './user.service';
     AppComponent,
     FrontpageComponent,
     HomepageComponent,
-    CertificateFormsComponent
+    CertificateFormsComponent,
+    PasswordResetComponent,
+    SuccessfulActivationComponent,
+    UserActivationComponent,
+    FrontPageCodeComponent
   ],
   imports: [
     BrowserModule,
@@ -35,13 +43,13 @@ import { UserService } from './user.service';
     BrowserAnimationsModule,
     MatInputModule,
     MatIconModule,
-    MatSelectModule, 
+    MatSelectModule,
     MatButtonModule,
     MatToolbarModule,
     FormsModule,
     ReactiveFormsModule,
     MatSnackBarModule
-   
+
   ],
   providers: [HttpClientModule, CertificateService, UserService],
   bootstrap: [AppComponent]

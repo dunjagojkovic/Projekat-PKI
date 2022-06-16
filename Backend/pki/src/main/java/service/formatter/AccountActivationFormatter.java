@@ -7,6 +7,6 @@ public class AccountActivationFormatter {
     }
 
     public String getSubject() {
-        return "Verify your registration at Stylinkt!";
+        return "Verify your registration at PKI!";
     }
 }

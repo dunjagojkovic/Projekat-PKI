@@ -21,7 +21,6 @@ import security.TokenUtil;
 import service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "http:/localhost:4200", exposedHeaders = "token")
@@ -49,7 +48,7 @@ public class UserController {
     	
         User user = customUserService.findUserByUserName(loginDTO.getUsername());
 
-        if (user == null || !loginDTO.getUsername().equals(user.getUsername())) {
+        if (user == null || !loginDTO.getUsername().equals(user.getUsername()) || !user.isActivated()) {
         	System.out.println("User not found!");
             return ResponseEntity.ok(HttpStatus.NOT_FOUND);
             
@@ -84,9 +83,9 @@ public class UserController {
     }
 
     @PostMapping(path = "/register")
-    public ResponseEntity<?> registerClient(@RequestBody RegistrationDTO registrationDTO) {
+    public ResponseEntity<?> registerClient(HttpServletRequest request, @RequestBody RegistrationDTO registrationDTO) {
 
-        User user = userService.registerUser(registrationDTO);
+        User user = userService.registerUser(request, registrationDTO);
 
         if(user == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -163,7 +162,9 @@ public class UserController {
     @PostMapping(path = "/loginCode")
     public ResponseEntity<?> getLoginCode(HttpServletRequest request, @RequestBody ForgottenPasswordDTO dto  )
     {
+        System.out.println("Here I am");
         User user = customUserService.findUserByUserName(dto.getUsername());
+        System.out.println(user);
         if(user == null) {
             return ResponseEntity.ok(HttpStatus.BAD_REQUEST);
         }

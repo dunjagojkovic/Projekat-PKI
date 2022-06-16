@@ -1,6 +1,5 @@
 package service;
 
-import dto.CreateRootDTO;
 import dto.RegistrationDTO;
 import dto.ResetPasswordDTO;
 import model.Certificate;
@@ -10,7 +9,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.aspectj.apache.bcel.classfile.Code;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -20,7 +18,6 @@ import repository.UserRepository;
 import security.SecurityUtils;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -42,7 +39,7 @@ public class UserService {
         return userRepository.findByUsername(username).get();
     }
 
-    public User registerUser(RegistrationDTO dto){
+    public User registerUser(HttpServletRequest request, RegistrationDTO dto){
 
         Optional<User> optionalUser = userRepository.findByUsername(dto.getUsername());
 
@@ -52,8 +49,13 @@ public class UserService {
         User user = new User();
         user.setUsername(dto.getUsername());
         user.setPassword(bCryptPasswordEncoder.encode(dto.getPassword()));
+        user.setEmail(dto.getEmail());
         user.setType("Regular");
-
+        String activationCode = codeService.generateActivationCodeForUSer(user);
+        user.setActivationCode(bCryptPasswordEncoder.encode(activationCode));
+        user.setActivationCodeValidity(LocalDateTime.now().plusDays(5));
+        user.setActivated(false);
+        mailService.sendUserRegistrationMail(user.getEmail(), activationCode, getSiteURL(request));
         return userRepository.save(user);
     }
 
