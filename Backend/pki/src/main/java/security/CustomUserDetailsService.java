@@ -52,6 +52,13 @@ public class CustomUserDetailsService implements UserDetailsService {
         authority.setName(user.get().getRole().toString());
         authorities.add(authority);
 
+
+        for (Permission p : user.get().getPermissions()) {
+            Authority auth = new Authority();
+            auth.setName(p.getName());
+            authorities.add(auth);
+        }
+
         return authorities;
     }
 

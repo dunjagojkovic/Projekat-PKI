@@ -1,10 +1,14 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
+import security.Permission;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author PC
@@ -33,6 +37,20 @@ public class User {
 	private LocalDateTime passwordResetCodeValidity;
 	private String loginCode;
 	private LocalDateTime loginCodeValidity;
+
+
+	public Set<Permission> getPermissions() {
+		return permissions;
+	}
+
+	public void setPermissions(Set<Permission> permissions) {
+		this.permissions = permissions;
+	}
+
+	@JsonManagedReference
+	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	private Set<Permission> permissions = new HashSet<>();
+
 
 	public LocalDateTime getActivationCodeValidity() {
 		return activationCodeValidity;

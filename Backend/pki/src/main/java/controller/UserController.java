@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -78,8 +79,7 @@ public class UserController {
 
     @GetMapping(path = "/current")
     public ResponseEntity<?> getCurrentUser() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        return new ResponseEntity<>(auth, HttpStatus.OK);
+        return new ResponseEntity<>(userService.getCurrentUser(), HttpStatus.OK);
     }
 
     @PostMapping(path = "/register")
@@ -96,11 +96,13 @@ public class UserController {
 
     
     @GetMapping(path = "/getAllUsers")
+    @PreAuthorize("hasAuthority('getAllUsers')")
     public ResponseEntity<List<UserDTO>> getAllUsers() {
         return new ResponseEntity<>(userService.convertUsersToDTO(userService.getAllUsers()), HttpStatus.OK);
     }
     
     @GetMapping(path = "/getSubordinateUsers/{currentUserUsername}")
+    @PreAuthorize("hasAuthority('getSubordinateUsers')")
     public ResponseEntity<List<UserDTO>> getSubordinateUsers(@PathVariable String currentUserUsername) {
         return new ResponseEntity<>(userService.convertUsersToDTO(userService.getAllSubordinateUsersToUser(userService.getUserByUsername(currentUserUsername))), HttpStatus.OK);
     }

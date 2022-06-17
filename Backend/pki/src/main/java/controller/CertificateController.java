@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -48,6 +49,7 @@ public class CertificateController {
 	private UserController userController;
 
 	@GetMapping(value = "/getAllCertificates")
+	@PreAuthorize("hasAuthority('getAllCertificates')")
 	public ResponseEntity<List<CertificateDTO>> getAllCertificates() {
 		for (model.Certificate cert : certService.getAllCertificates()) {
 			if(cert.getIssuer()!=null)
@@ -57,26 +59,31 @@ public class CertificateController {
 	}
 	
 	@GetMapping(value = "/getSubordinateCertificates/{username}")
+	@PreAuthorize("hasAuthority('getSubordinateCertificates')")
 	public ResponseEntity<List<CertificateDTO>> getSubordinateCertificates(@PathVariable String username) {
 		return new ResponseEntity<>(certService.convertCertificatesToDTO(certService.getSubordinateCertificates(userService.getUserByUsername(username))), HttpStatus.OK);
 	}
 	
 	@GetMapping(value = "/getValidIssuers")
+	@PreAuthorize("hasAuthority('getValidIssuers')")
 	public ResponseEntity<List<ValidIssuerDTO>> getValidIssuers() {
 		return new ResponseEntity<>(certService.convertValidIssuersToDTO(certService.getValidIssuers()), HttpStatus.OK);
 	}
 	
 	@GetMapping(value = "/getValidIssuersForUser/{username}")
+	@PreAuthorize("hasAuthority('getValidIssuersForUser')")
 	public ResponseEntity<List<ValidIssuerDTO>> getValidIssuersForUser(@PathVariable String username) {
 		return new ResponseEntity<>(certService.convertValidIssuersToDTO(certService.getValidIssuers(userService.getUserByUsername(username))), HttpStatus.OK);
 	}
 	
 	@PostMapping(value = "/revokeCert/{certificateToRevokeSerialNumber}")
+	@PreAuthorize("hasAuthority('revokeCert')")
 	public ResponseEntity<String> revokeCert(@PathVariable int certificateToRevokeSerialNumber) {
 		return certService.revokeCert(certificateToRevokeSerialNumber);
 	}
 
 	@PostMapping(consumes = "application/json", value = "/registerCert")
+	@PreAuthorize("hasAuthority('registerCert')")
 	public ResponseEntity<CertificateCreationDTO> registerCert(@RequestBody CertificateCreationDTO certDTO) {
 
 		System.out.println(certDTO.toString());
@@ -90,7 +97,7 @@ public class CertificateController {
 
 	}
 
-	//@PreAuthorize("hasAuthority('Admin')")
+	@PreAuthorize("hasAuthority('registerRoot')")
 	@PostMapping(consumes = "application/json", value = "/registerRoot")
 	public ResponseEntity<CreateRootDTO> registerRoot(HttpServletRequest request, @RequestBody CreateRootDTO rootDTO) {
 
@@ -113,6 +120,7 @@ public class CertificateController {
 	}
 
 	@PostMapping(consumes = "application/json", value = "/registerSub")
+	@PreAuthorize("hasAuthority('registerSub')")
 	public ResponseEntity<CreateSubDTO> registerSub(HttpServletRequest request, @RequestBody CreateSubDTO subDTO) {
 		System.out.println(subDTO.toString());
 		
@@ -182,31 +190,7 @@ public class CertificateController {
 		
 	}
 	
-	/*@RequestMapping(value = "/{file_name}", method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-	@ResponseBody
-	public FileSystemResource getFile(@PathVariable("file_name") String fileName) throws FileNotFoundException {
-		String path = "certificates"+File.separator+fileName;
-		File file = new File(path);
-		return new FileSystemResource(file);
-		
-	}*/
-	
-	/*@RequestMapping(value = "/{file_name}", method = RequestMethod.GET)
-	public void getFile(
-	    @PathVariable("file_name") String fileName, 
-	    HttpServletResponse response) {
-	    try {
-	      // get your file as InputStream
-	      InputStream is = ...;
-	      // copy it to response's OutputStream
-	      org.apache.commons.io.IOUtils.copy(is, response.getOutputStream());
-	      response.flushBuffer();
-	    } catch (IOException ex) {
-	      log.info("Error writing file to output stream. Filename was '{}'", fileName, ex);
-	      throw new RuntimeException("IOError writing file to output stream");
-	    }
 
-	}*/
 	
 	
 	
